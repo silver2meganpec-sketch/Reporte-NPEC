@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reporte Diario de Obra (RDO) - NPEC SpA</title>
+<!-- Librería SheetJS para lectura y escritura de archivos Excel (.xlsx) -->
+<script src="https://sheetjs.com"></script>
 <style>
   @page {
     size: A4 portrait;
@@ -69,6 +71,7 @@
   .btn-amber { background-color: #f59e0b; color: #000; }
   .btn-green { background-color: #10b981; color: #fff; }
   .btn-blue { background-color: #2563eb; color: #fff; }
+  .btn-purple { background-color: #7c3aed; color: #fff; }
   .btn-red { background-color: #ef4444; color: #fff; }
 
   /* Contenedor principal simulando hojas A4 */
@@ -355,20 +358,19 @@
   <h1>RDO DIGITAL — NEW PRIME EAGLE CONSTRUCTION SpA</h1>
   <div class="toolbar-buttons">
     <button type="button" class="btn btn-amber" onclick="document.getElementById('logoInput').click()">📁 Cargar Logo</button>
-    <button type="button" class="btn btn-green" onclick="window.print()">🖨️ Guardar PDF / Imprimir (A4 - 2 Hojas)</button>
-    <button type="button" class="btn btn-blue" onclick="exportToCSV()">📊 Exportar Excel (.CSV)</button>
+    <button type="button" class="btn btn-purple" onclick="document.getElementById('excelInput').click()">📥 Importar Excel (Día Ant.)</button>
+    <button type="button" class="btn btn-blue" onclick="exportToExcel()">📊 Exportar Excel (.XLSX)</button>
+    <button type="button" class="btn btn-green" onclick="window.print()">🖨️ Guardar PDF / Imprimir</button>
     <button type="button" class="btn btn-red" onclick="resetForm()">🗑️ Limpiar</button>
   </div>
 </div>
 
 <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
-
+<input type="file" id="excelInput" accept=".xlsx, .xls" style="display:none" onchange="importFromExcel(event)">
 <div class="sheet-container">
 
-  <!-- ==================== HOJA 1 ==================== -->
   <div class="a4-page" id="page1">
     <div>
-      <!-- ENCABEZADO -->
       <table>
         <colgroup>
           <col style="width: 21%;">
@@ -393,7 +395,7 @@
           <td><input type="text" id="reportNo" value="RDO-001" class="bold text-center" oninput="syncHeader()"></td>
         </tr>
         <tr>
-          <td class="label-cell">FECHA:</td>
+          <td class="label-cell">FECHA REPORTE:</td>
           <td><input type="date" id="reportDate" onchange="updateDayOfWeek(); syncHeader();"></td>
         </tr>
         <tr>
@@ -413,6 +415,12 @@
         <tr>
           <td class="label-cell">CLIENTE / MANDANTE:</td>
           <td colspan="2"><input type="text" id="clientName" placeholder="Nombre del Cliente / Mandante"></td>
+        </tr>
+        <tr>
+          <td class="label-cell">FECHA INICIO OBRA:</td>
+          <td colspan="2"><input type="date" id="projectStartDate"></td>
+          <td class="label-cell">FECHA TÉRMINO:</td>
+          <td><input type="date" id="projectEndDate"></td>
         </tr>
         <tr>
           <td class="label-cell">CONDICIONES CLIMA:</td>
@@ -462,7 +470,6 @@
         </tr>
       </table>
 
-      <!-- SECCIÓN 1: HSE -->
       <table>
         <colgroup>
           <col style="width: 20%;">
@@ -493,8 +500,6 @@
           <td colspan="4"><input type="text" id="hseTopic" value="Uso correcto de EPP, orden y aseo en frentes de trabajo y prevención de riesgos en maniobras."></td>
         </tr>
       </table>
-
-      <!-- SECCIÓN 2A Y 2B -->
       <div class="split-grid">
         <div class="split-col">
           <table id="tableToday">
@@ -545,7 +550,6 @@
         </div>
       </div>
 
-      <!-- SECCIÓN 3: AVANCE FÍSICO Y PONDERACIÓN ECONÓMICA -->
       <table id="tableProgress">
         <colgroup>
           <col style="width: 8%;">
@@ -593,7 +597,7 @@
       <button type="button" class="btn-add-row" onclick="addProgressRow()">+ Agregar Partida WBS</button>
 
       <div class="info-note">
-        <strong>Cálculo Automático:</strong> Ingresa el <strong>Monto Total Partida ($)</strong> de cada ítem del presupuesto; el sistema calculará automáticamente su <strong>Peso / Incid. (%)</strong> respecto al total del contrato (sumando 100%) y el <strong>Avance Físico Global Real</strong> de toda la obra.
+        <strong>Flujo Diario Automático:</strong> Al finalizar el día, presiona <strong>Exportar Excel (.XLSX)</strong>. Al día siguiente, presiona <strong>Importar Excel (Día Ant.)</strong> y selecciona el archivo guardado: el sistema cargará la obra, avanzará el reporte y moverá el <em>Acum. Actual</em> hacia el <em>Acum. Anterior</em> automáticamente.
       </div>
     </div>
 
@@ -601,11 +605,8 @@
       Página 1 de 2 — New Prime Eagle Construction SpA
     </div>
   </div>
-
-  <!-- ==================== HOJA 2 ==================== -->
   <div class="a4-page" id="page2">
     <div>
-      <!-- CINTILLO DE CONTINUIDAD -->
       <table>
         <colgroup>
           <col style="width: 65%;">
@@ -619,7 +620,6 @@
         </tr>
       </table>
 
-      <!-- SECCIÓN 4: MANO DE OBRA -->
       <table id="tableManpower">
         <colgroup>
           <col style="width: 11%;">
@@ -667,7 +667,6 @@
       </table>
       <button type="button" class="btn-add-row" onclick="addManpowerRow('Directo', '')">+ Agregar Cargo / Mano de Obra</button>
 
-      <!-- SECCIÓN 5: MAQUINARIA Y EQUIPOS -->
       <table id="tableEquipment">
         <colgroup>
           <col style="width: 28%;">
@@ -698,7 +697,6 @@
       </table>
       <button type="button" class="btn-add-row" onclick="addEquipmentRow()">+ Agregar Equipo / Maquinaria</button>
 
-      <!-- SECCIÓN 6: RESTRICCIONES Y OBSERVACIONES -->
       <table>
         <tr>
           <td class="section-title">6. RESTRICCIONES, INTERFERENCIAS Y OBSERVACIONES DEL DÍA</td>
@@ -710,7 +708,6 @@
         </tr>
       </table>
 
-      <!-- SECCIÓN 7: REGISTRO FOTOGRÁFICO -->
       <table>
         <tr>
           <td class="section-title">7. REGISTRO FOTOGRÁFICO DEL AVANCE (HASTA 4 FOTOGRAFÍAS)</td>
@@ -762,7 +759,6 @@
         </div>
       </div>
 
-      <!-- BLOQUE DE FIRMAS -->
       <table style="margin-top: 6px;">
         <colgroup>
           <col style="width: 33.33%;">
@@ -798,11 +794,8 @@
   </div>
 
 </div>
-
 <script>
-  // Inicialización al cargar la página
   document.addEventListener('DOMContentLoaded', function() {
-    // Establecer fecha actual por defecto
     const dateInput = document.getElementById('reportDate');
     if (dateInput && !dateInput.value) {
       const today = new Date();
@@ -814,18 +807,15 @@
     updateDayOfWeek();
     syncHeader();
 
-    // Cargar filas iniciales en Sección 2A y 2B
     for (let i = 0; i < 5; i++) {
       addTodayRow();
       addTomorrowRow();
     }
 
-    // Cargar filas iniciales en Sección 3
     for (let i = 0; i < 5; i++) {
       addProgressRow();
     }
 
-    // Cargar cargos estándar en Sección 4
     const defaultRoles = [
       ['Indirecto', 'Jefe de Terreno / Ingenieros / Supervisión'],
       ['Indirecto', 'Prevención de Riesgos (HSE) / Calidad (QA-QC)'],
@@ -838,12 +828,10 @@
       addManpowerRow(item[0], item[1]);
     });
 
-    // Cargar filas iniciales en Sección 5
     for (let i = 0; i < 4; i++) {
       addEquipmentRow();
     }
 
-    // Intentar cargar logo por defecto si existe logo.png en el repositorio
     const testImg = new Image();
     testImg.onload = function() {
       const preview = document.getElementById('logoPreview');
@@ -891,42 +879,38 @@
     }
   }
 
-  // SECCIÓN 2A: HOY
-  function addTodayRow() {
+  function addTodayRow(wbs = '', desc = '', pct = '') {
     const tbody = document.getElementById('tbodyToday');
     const tr = document.createElement('tr');
     tr.innerHTML =
-      '<td><input type="text" placeholder="WBS"></td>' +
-      '<td><input type="text" placeholder="Actividad ejecutada..."></td>' +
-      '<td><input type="text" placeholder="100%" class="text-center"></td>' +
+      '<td><input type="text" value="' + escapeHtml(wbs) + '" placeholder="WBS"></td>' +
+      '<td><input type="text" value="' + escapeHtml(desc) + '" placeholder="Actividad ejecutada..."></td>' +
+      '<td><input type="text" value="' + escapeHtml(pct) + '" placeholder="100%" class="text-center"></td>' +
       '<td class="col-action"><button type="button" class="btn-del-row" onclick="removeRow(this)">X</button></td>';
     tbody.appendChild(tr);
   }
 
-  // SECCIÓN 2B: MAÑANA
-  function addTomorrowRow() {
+  function addTomorrowRow(wbs = '', desc = '', resp = '') {
     const tbody = document.getElementById('tbodyTomorrow');
     const tr = document.createElement('tr');
     tr.innerHTML =
-      '<td><input type="text" placeholder="WBS"></td>' +
-      '<td><input type="text" placeholder="Tarea programada..."></td>' +
-      '<td><input type="text" placeholder="Responsable"></td>' +
+      '<td><input type="text" value="' + escapeHtml(wbs) + '" placeholder="WBS"></td>' +
+      '<td><input type="text" value="' + escapeHtml(desc) + '" placeholder="Tarea programada..."></td>' +
+      '<td><input type="text" value="' + escapeHtml(resp) + '" placeholder="Responsable"></td>' +
       '<td class="col-action"><button type="button" class="btn-del-row" onclick="removeRow(this)">X</button></td>';
     tbody.appendChild(tr);
   }
-
-  // SECCIÓN 3: AVANCE FÍSICO Y PONDERACIÓN ECONÓMICA
-  function addProgressRow() {
+  function addProgressRow(item = '', desc = '', unit = '', amt = 0, totQty = 0, prevQty = 0, todayQty = 0) {
     const tbody = document.getElementById('tbodyProgress');
     const tr = document.createElement('tr');
     tr.innerHTML =
-      '<td><input type="text" placeholder="01.01" class="text-center"></td>' +
-      '<td><input type="text" placeholder="Descripción partida..."></td>' +
-      '<td><input type="text" placeholder="m³" class="text-center"></td>' +
-      '<td><input type="number" class="prog-amount" value="0" min="0" step="any" oninput="recalcProgress()"></td>' +
-      '<td><input type="number" class="prog-total-qty" value="0" min="0" step="any" oninput="recalcProgress()"></td>' +
-      '<td><input type="number" class="prog-prev-qty" value="0" min="0" step="any" oninput="recalcProgress()"></td>' +
-      '<td><input type="number" class="prog-today-qty" value="0" min="0" step="any" oninput="recalcProgress()"></td>' +
+      '<td><input type="text" value="' + escapeHtml(item) + '" placeholder="01.01" class="text-center"></td>' +
+      '<td><input type="text" value="' + escapeHtml(desc) + '" placeholder="Descripción partida..."></td>' +
+      '<td><input type="text" value="' + escapeHtml(unit) + '" placeholder="m³" class="text-center"></td>' +
+      '<td><input type="number" class="prog-amount" value="' + amt + '" min="0" step="any" oninput="recalcProgress()"></td>' +
+      '<td><input type="number" class="prog-total-qty" value="' + totQty + '" min="0" step="any" oninput="recalcProgress()"></td>' +
+      '<td><input type="number" class="prog-prev-qty" value="' + prevQty + '" min="0" step="any" oninput="recalcProgress()"></td>' +
+      '<td><input type="number" class="prog-today-qty" value="' + todayQty + '" min="0" step="any" oninput="recalcProgress()"></td>' +
       '<td class="calc-cell prog-curr-qty">0.00</td>' +
       '<td class="calc-cell prog-item-pct">0.00%</td>' +
       '<td class="calc-cell prog-weight-pct">0.00%</td>' +
@@ -939,7 +923,6 @@
     const rows = document.querySelectorAll('#tbodyProgress tr');
     let totalContractAmount = 0;
 
-    // Primera pasada: sumar el monto total del contrato
     rows.forEach(function(row) {
       const amtInput = row.querySelector('.prog-amount');
       const amt = parseFloat(amtInput ? amtInput.value : 0) || 0;
@@ -949,7 +932,6 @@
     let sumWeightPct = 0;
     let globalProgressPct = 0;
 
-    // Segunda pasada: calcular acumulados, % partida, peso/incidencia y avance global
     rows.forEach(function(row) {
       const amt = parseFloat(row.querySelector('.prog-amount').value) || 0;
       const totQty = parseFloat(row.querySelector('.prog-total-qty').value) || 0;
@@ -975,8 +957,7 @@
     document.getElementById('headerGlobalProgress').textContent = globalProgressPct.toFixed(2) + '%';
   }
 
-  // SECCIÓN 4: MANO DE OBRA
-  function addManpowerRow(typeVal, roleVal) {
+  function addManpowerRow(typeVal = 'Directo', roleVal = '', dayVal = 0, nightVal = 0, hoursVal = 9, prevHHVal = 0) {
     const tbody = document.getElementById('tbodyManpower');
     const tr = document.createElement('tr');
     const selInd = typeVal === 'Indirecto' ? 'selected' : '';
@@ -989,13 +970,13 @@
           '<option value="Directo" ' + selDir + '>Directo</option>' +
         '</select>' +
       '</td>' +
-      '<td><input type="text" class="mp-role" value="' + (roleVal || '') + '" placeholder="Cargo / Especialidad"></td>' +
-      '<td><input type="number" class="mp-day" value="0" min="0" oninput="recalcManpower()"></td>' +
-      '<td><input type="number" class="mp-night" value="0" min="0" oninput="recalcManpower()"></td>' +
+      '<td><input type="text" class="mp-role" value="' + escapeHtml(roleVal) + '" placeholder="Cargo / Especialidad"></td>' +
+      '<td><input type="number" class="mp-day" value="' + dayVal + '" min="0" oninput="recalcManpower()"></td>' +
+      '<td><input type="number" class="mp-night" value="' + nightVal + '" min="0" oninput="recalcManpower()"></td>' +
       '<td class="calc-cell mp-tot-pers">0</td>' +
-      '<td><input type="number" class="mp-hours" value="9" min="0" step="0.5" oninput="recalcManpower()"></td>' +
+      '<td><input type="number" class="mp-hours" value="' + hoursVal + '" min="0" step="0.5" oninput="recalcManpower()"></td>' +
       '<td class="calc-cell mp-today-hh">0</td>' +
-      '<td><input type="number" class="mp-prev-hh" value="0" min="0" step="any" oninput="recalcManpower()"></td>' +
+      '<td><input type="number" class="mp-prev-hh" value="' + prevHHVal + '" min="0" step="any" oninput="recalcManpower()"></td>' +
       '<td class="calc-cell mp-curr-hh">0</td>' +
       '<td class="col-action"><button type="button" class="btn-del-row" onclick="removeRow(this)">X</button></td>';
     tbody.appendChild(tr);
@@ -1036,23 +1017,21 @@
     document.getElementById('totCurrHH').textContent = sumCurrHH.toFixed(1).replace(/\.0$/, '');
   }
 
-  // SECCIÓN 5: MAQUINARIA
-  function addEquipmentRow() {
+  function addEquipmentRow(desc = '', code = '', qty = 0, op = 0, sb = 0, mant = 0, obs = '') {
     const tbody = document.getElementById('tbodyEquipment');
     const tr = document.createElement('tr');
     tr.innerHTML =
-      '<td><input type="text" placeholder="Ej. Excavadora, Camión Tolva..."></td>' +
-      '<td><input type="text" placeholder="Código / Patente" class="text-center"></td>' +
-      '<td><input type="number" value="0" min="0"></td>' +
-      '<td><input type="number" value="0" min="0" step="0.5"></td>' +
-      '<td><input type="number" value="0" min="0" step="0.5"></td>' +
-      '<td><input type="number" value="0" min="0" step="0.5"></td>' +
-      '<td><input type="text" placeholder="Frente de trabajo / Estado"></td>' +
+      '<td><input type="text" value="' + escapeHtml(desc) + '" placeholder="Ej. Excavadora, Camión Tolva..."></td>' +
+      '<td><input type="text" value="' + escapeHtml(code) + '" placeholder="Código / Patente" class="text-center"></td>' +
+      '<td><input type="number" value="' + qty + '" min="0"></td>' +
+      '<td><input type="number" value="' + op + '" min="0" step="0.5"></td>' +
+      '<td><input type="number" value="' + sb + '" min="0" step="0.5"></td>' +
+      '<td><input type="number" value="' + mant + '" min="0" step="0.5"></td>' +
+      '<td><input type="text" value="' + escapeHtml(obs) + '" placeholder="Frente de trabajo / Estado"></td>' +
       '<td class="col-action"><button type="button" class="btn-del-row" onclick="removeRow(this)">X</button></td>';
     tbody.appendChild(tr);
   }
 
-  // CARGA DE LOGO Y FOTOS
   function handleLogoUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -1081,64 +1060,268 @@
     reader.readAsDataURL(file);
   }
 
-  // EXPORTAR A CSV COMPATIBLE CON EXCEL
-  function exportToCSV() {
-    const rows = [];
-    rows.push(['REPORTE DIARIO DE OBRA (RDO) - NEW PRIME EAGLE CONSTRUCTION SpA']);
-    rows.push(['N° Reporte', document.getElementById('reportNo').value, 'Fecha', document.getElementById('reportDate').value, 'Día', document.getElementById('dayName').value]);
-    rows.push(['Proyecto', document.getElementById('projectName').value, 'Contrato', document.getElementById('contractCode').value, 'Avance Global Real', document.getElementById('headerGlobalProgress').textContent]);
-    rows.push(['Cliente', document.getElementById('clientName').value, 'Clima AM', document.getElementById('weatherAM').value, 'Clima PM', document.getElementById('weatherPM').value, 'Terreno', document.getElementById('groundCond').value]);
-    rows.push([]);
+  function escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function exportToExcel() {
+    if (typeof XLSX === 'undefined') {
+      alert('La librería Excel aún se está cargando. Intenta nuevamente en unos segundos.');
+      return;
+    }
 
-    rows.push(['3. CONTROL DE AVANCE FÍSICO Y PONDERACIÓN ECONÓMICA']);
-    rows.push(['Item/WBS', 'Descripción', 'Unidad', 'Monto Total ($)', 'Cant. Contrato', 'Acum. Anterior', 'Ejecutado Hoy', 'Acum. Actual', '% Avance Partida', 'Peso/Incid. (%)']);
+    const wb = XLSX.utils.book_new();
+
+    const generalData = [
+      ['REPORTE DIARIO DE OBRA (RDO) - NEW PRIME EAGLE CONSTRUCTION SpA'],
+      ['Campo', 'Valor'],
+      ['N_Reporte', document.getElementById('reportNo').value],
+      ['Fecha_Reporte', document.getElementById('reportDate').value],
+      ['Dia_Semana', document.getElementById('dayName').value],
+      ['Proyecto_Obra', document.getElementById('projectName').value],
+      ['Contrato_WBS', document.getElementById('contractCode').value],
+      ['Cliente_Mandante', document.getElementById('clientName').value],
+      ['Fecha_Inicio_Obra', document.getElementById('projectStartDate').value],
+      ['Fecha_Termino_Obra', document.getElementById('projectEndDate').value],
+      ['Avance_Global_Real', document.getElementById('headerGlobalProgress').textContent],
+      ['Clima_AM', document.getElementById('weatherAM').value],
+      ['Clima_PM', document.getElementById('weatherPM').value],
+      ['Condicion_Terreno', document.getElementById('groundCond').value],
+      ['HSE_Dias_Sin_Accidentes', parseFloat(document.getElementById('hseLti').value) || 0],
+      ['HSE_Incidentes', parseFloat(document.getElementById('hseIncidents').value) || 0],
+      ['HSE_Permisos_PTW', parseFloat(document.getElementById('hsePtw').value) || 0],
+      ['HSE_Inspecciones', parseFloat(document.getElementById('hseInspections').value) || 0],
+      ['HSE_Asistentes_Charla', parseFloat(document.getElementById('hseAttendees').value) || 0],
+      ['HSE_Tema_Charla', document.getElementById('hseTopic').value],
+      ['Restricciones_Observaciones', document.getElementById('restrictionsText').value],
+      ['Elaborado_Por_Nombre', document.getElementById('sigPrepName').value],
+      ['Revisado_Por_Nombre', document.getElementById('sigRevName').value],
+      ['Aprobado_Por_Nombre', document.getElementById('sigAppName').value]
+    ];
+    const wsGeneral = XLSX.utils.aoa_to_sheet(generalData);
+    XLSX.utils.book_append_sheet(wb, wsGeneral, 'Resumen_RDO');
+
+    const progressData = [
+      ['Item_WBS', 'Descripcion_Partida', 'Unidad', 'Monto_Total_Partida', 'Cant_Total_Contrato', 'Acum_Anterior', 'Ejecutado_Hoy', 'Acum_Actual', 'Pct_Avance_Partida', 'Peso_Incid_Pct']
+    ];
     document.querySelectorAll('#tbodyProgress tr').forEach(function(tr) {
       const inputs = tr.querySelectorAll('input');
-      rows.push([
+      progressData.push([
         inputs[0].value,
         inputs[1].value,
         inputs[2].value,
-        inputs[3].value,
-        inputs[4].value,
-        inputs[5].value,
-        inputs[6].value,
-        tr.querySelector('.prog-curr-qty').textContent,
+        parseFloat(inputs[3].value) || 0,
+        parseFloat(inputs[4].value) || 0,
+        parseFloat(inputs[5].value) || 0,
+        parseFloat(inputs[6].value) || 0,
+        parseFloat(tr.querySelector('.prog-curr-qty').textContent) || 0,
         tr.querySelector('.prog-item-pct').textContent,
         tr.querySelector('.prog-weight-pct').textContent
       ]);
     });
-    rows.push(['', '', 'TOTALES:', document.getElementById('totalContractAmount').textContent, '', '', '', '', document.getElementById('footerGlobalProgress').textContent, document.getElementById('totalWeightPct').textContent]);
-    rows.push([]);
+    const wsProgress = XLSX.utils.aoa_to_sheet(progressData);
+    XLSX.utils.book_append_sheet(wb, wsProgress, 'Avance_Fisico');
 
-    rows.push(['4. CONTROL DE MANO DE OBRA Y HORAS-HOMBRE']);
-    rows.push(['Tipo', 'Cargo', 'Turno Día', 'Turno Noche', 'Total Personal', 'Horas Jornada', 'Total HH Hoy', 'HH Acum. Ant.', 'HH Acum. Act.']);
+    const manpowerData = [
+      ['Tipo', 'Cargo_Especialidad', 'Turno_Dia', 'Turno_Noche', 'Total_Personal', 'Horas_Jornada', 'Total_HH_Hoy', 'HH_Acum_Anterior', 'HH_Acum_Actual']
+    ];
     document.querySelectorAll('#tbodyManpower tr').forEach(function(tr) {
       const sel = tr.querySelector('select').value;
       const inputs = tr.querySelectorAll('input');
-      rows.push([
+      manpowerData.push([
         sel,
         inputs[0].value,
-        inputs[1].value,
-        inputs[2].value,
-        tr.querySelector('.mp-tot-pers').textContent,
-        inputs[3].value,
-        tr.querySelector('.mp-today-hh').textContent,
-        inputs[4].value,
-        tr.querySelector('.mp-curr-hh').textContent
+        parseFloat(inputs[1].value) || 0,
+        parseFloat(inputs[2].value) || 0,
+        parseFloat(tr.querySelector('.mp-tot-pers').textContent) || 0,
+        parseFloat(inputs[3].value) || 0,
+        parseFloat(tr.querySelector('.mp-today-hh').textContent) || 0,
+        parseFloat(inputs[4].value) || 0,
+        parseFloat(tr.querySelector('.mp-curr-hh').textContent) || 0
       ]);
     });
+    const wsManpower = XLSX.utils.aoa_to_sheet(manpowerData);
+    XLSX.utils.book_append_sheet(wb, wsManpower, 'Mano_de_Obra');
 
-    const csvContent = '\uFEFF' + rows.map(function(e) {
-      return e.map(function(cell) {
-        return '"' + String(cell || '').replace(/"/g, '""') + '"';
-      }).join(';');
-    }).join('\n');
+    const equipData = [
+      ['Descripcion_Equipo', 'Codigo_Patente', 'Cantidad', 'Hrs_Operativas', 'Hrs_StandBy', 'Hrs_Mantencion', 'Observaciones_Frente']
+    ];
+    document.querySelectorAll('#tbodyEquipment tr').forEach(function(tr) {
+      const inputs = tr.querySelectorAll('input');
+      equipData.push([
+        inputs[0].value,
+        inputs[1].value,
+        parseFloat(inputs[2].value) || 0,
+        parseFloat(inputs[3].value) || 0,
+        parseFloat(inputs[4].value) || 0,
+        parseFloat(inputs[5].value) || 0,
+        inputs[6].value
+      ]);
+    });
+    const wsEquip = XLSX.utils.aoa_to_sheet(equipData);
+    XLSX.utils.book_append_sheet(wb, wsEquip, 'Maquinaria');
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = (document.getElementById('reportNo').value || 'RDO-001') + '_NPEC.csv';
-    link.click();
+    const actData = [
+      ['Tipo_Actividad', 'Area_WBS', 'Descripcion', 'Porcentaje_o_Responsable']
+    ];
+    document.querySelectorAll('#tbodyToday tr').forEach(function(tr) {
+      const inputs = tr.querySelectorAll('input');
+      if (inputs[0].value || inputs[1].value || inputs[2].value) {
+        actData.push(['Ejecutado_Hoy', inputs[0].value, inputs[1].value, inputs[2].value]);
+      }
+    });
+    document.querySelectorAll('#tbodyTomorrow tr').forEach(function(tr) {
+      const inputs = tr.querySelectorAll('input');
+      if (inputs[0].value || inputs[1].value || inputs[2].value) {
+        actData.push(['Programado_Manana', inputs[0].value, inputs[1].value, inputs[2].value]);
+      }
+    });
+    const wsAct = XLSX.utils.aoa_to_sheet(actData);
+    XLSX.utils.book_append_sheet(wb, wsAct, 'Actividades');
+
+    const fileName = (document.getElementById('reportNo').value || 'RDO-001') + '_' + (document.getElementById('reportDate').value || 'NPEC') + '.xlsx';
+    XLSX.writeFile(wb, fileName);
+  }
+  function importFromExcel(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, { type: 'array' });
+
+        if (wb.Sheets['Resumen_RDO']) {
+          const genRows = XLSX.utils.sheet_to_json(wb.Sheets['Resumen_RDO'], { header: 1 });
+          const genMap = {};
+          genRows.forEach(function(r) {
+            if (r && r[0]) genMap[String(r[0]).trim()] = r[1];
+          });
+
+          if (genMap['N_Reporte']) {
+            const prevRep = String(genMap['N_Reporte']);
+            const match = prevRep.match(/^(.*?)(\d+)$/);
+            if (match) {
+              const prefix = match[1];
+              const numStr = match[2];
+              const nextNum = String(parseInt(numStr, 10) + 1).padStart(numStr.length, '0');
+              document.getElementById('reportNo').value = prefix + nextNum;
+            } else {
+              document.getElementById('reportNo').value = prevRep;
+            }
+          }
+
+          if (genMap['Fecha_Reporte']) {
+            const parts = String(genMap['Fecha_Reporte']).split('-');
+            if (parts.length === 3) {
+              const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+              d.setDate(d.getDate() + 1);
+              const yyyy = d.getFullYear();
+              const mm = String(d.getMonth() + 1).padStart(2, '0');
+              const dd = String(d.getDate()).padStart(2, '0');
+              document.getElementById('reportDate').value = yyyy + '-' + mm + '-' + dd;
+            }
+          }
+
+          if (genMap['Proyecto_Obra'] !== undefined) document.getElementById('projectName').value = genMap['Proyecto_Obra'];
+          if (genMap['Contrato_WBS'] !== undefined) document.getElementById('contractCode').value = genMap['Contrato_WBS'];
+          if (genMap['Cliente_Mandante'] !== undefined) document.getElementById('clientName').value = genMap['Cliente_Mandante'];
+          if (genMap['Fecha_Inicio_Obra'] !== undefined) document.getElementById('projectStartDate').value = genMap['Fecha_Inicio_Obra'];
+          if (genMap['Fecha_Termino_Obra'] !== undefined) document.getElementById('projectEndDate').value = genMap['Fecha_Termino_Obra'];
+
+          if (genMap['HSE_Dias_Sin_Accidentes'] !== undefined) {
+            document.getElementById('hseLti').value = (parseInt(genMap['HSE_Dias_Sin_Accidentes'], 10) || 0) + 1;
+          }
+          if (genMap['HSE_Tema_Charla']) document.getElementById('hseTopic').value = genMap['HSE_Tema_Charla'];
+          if (genMap['Elaborado_Por_Nombre']) document.getElementById('sigPrepName').value = genMap['Elaborado_Por_Nombre'];
+          if (genMap['Revisado_Por_Nombre']) document.getElementById('sigRevName').value = genMap['Revisado_Por_Nombre'];
+          if (genMap['Aprobado_Por_Nombre']) document.getElementById('sigAppName').value = genMap['Aprobado_Por_Nombre'];
+
+          updateDayOfWeek();
+          syncHeader();
+        }
+
+        if (wb.Sheets['Avance_Fisico']) {
+          const progRows = XLSX.utils.sheet_to_json(wb.Sheets['Avance_Fisico']);
+          if (progRows.length > 0) {
+            const tbodyProg = document.getElementById('tbodyProgress');
+            tbodyProg.innerHTML = '';
+            progRows.forEach(function(row) {
+              const prevAccum = parseFloat(row['Acum_Actual']) || 0;
+              addProgressRow(
+                row['Item_WBS'] || '',
+                row['Descripcion_Partida'] || '',
+                row['Unidad'] || '',
+                parseFloat(row['Monto_Total_Partida']) || 0,
+                parseFloat(row['Cant_Total_Contrato']) || 0,
+                prevAccum,
+                0
+              );
+            });
+          }
+        }
+
+        if (wb.Sheets['Mano_de_Obra']) {
+          const mpRows = XLSX.utils.sheet_to_json(wb.Sheets['Mano_de_Obra']);
+          if (mpRows.length > 0) {
+            const tbodyMp = document.getElementById('tbodyManpower');
+            tbodyMp.innerHTML = '';
+            mpRows.forEach(function(row) {
+              const prevHH = parseFloat(row['HH_Acum_Actual']) || 0;
+              addManpowerRow(
+                row['Tipo'] || 'Directo',
+                row['Cargo_Especialidad'] || '',
+                0,
+                0,
+                parseFloat(row['Horas_Jornada']) || 9,
+                prevHH
+              );
+            });
+          }
+        }
+
+        if (wb.Sheets['Maquinaria']) {
+          const eqRows = XLSX.utils.sheet_to_json(wb.Sheets['Maquinaria']);
+          if (eqRows.length > 0) {
+            const tbodyEq = document.getElementById('tbodyEquipment');
+            tbodyEq.innerHTML = '';
+            eqRows.forEach(function(row) {
+              addEquipmentRow(
+                row['Descripcion_Equipo'] || '',
+                row['Codigo_Patente'] || '',
+                parseFloat(row['Cantidad']) || 0,
+                0, 0, 0,
+                row['Observaciones_Frente'] || ''
+              );
+            });
+          }
+        }
+
+        if (wb.Sheets['Actividades']) {
+          const actRows = XLSX.utils.sheet_to_json(wb.Sheets['Actividades']);
+          const plannedForToday = actRows.filter(function(r) {
+            return r['Tipo_Actividad'] === 'Programado_Manana';
+          });
+          if (plannedForToday.length > 0) {
+            const tbodyToday = document.getElementById('tbodyToday');
+            tbodyToday.innerHTML = '';
+            plannedForToday.forEach(function(row) {
+              addTodayRow(row['Area_WBS'] || '', row['Descripcion'] || '', '');
+            });
+          }
+        }
+
+        alert('✅ Reporte del día anterior importado correctamente.\n\n• N° Reporte y Fecha actualizados.\n• Acumulados de Partidas y HH transferidos a "Acum. Anterior".\n• Tareas programadas cargadas en "Avance del Día de Hoy".');
+      } catch (err) {
+        alert('❌ Error al leer el archivo Excel. Asegúrate de seleccionar un archivo .xlsx exportado desde este sistema.\nDetalle: ' + err.message);
+      }
+      event.target.value = '';
+    };
+    reader.readAsArrayBuffer(file);
   }
 
   function resetForm() {
