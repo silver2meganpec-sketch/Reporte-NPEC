@@ -9,49 +9,43 @@
     --navy: #0D254C;
     --navy-light: #1A3A6E;
     --slate: #2C3E50;
-    --bg: #F0F2F5;
-    --card: #FFFFFF;
-    --border: #CBD5E1;
-    --text: #1E293B;
-    --accent: #0284C7;
-    --success: #15803D;
+    --bg-gray: #F4F6F9;
+    --border-color: #B8C4D4;
+    --accent: #1E6BB8;
   }
 
   * {
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   body {
     margin: 0;
-    padding: 0;
-    background-color: var(--bg);
-    color: var(--text);
-    font-size: 13px;
+    padding: 15px;
+    background-color: #E2E8F0;
+    color: #1A202C;
+    font-size: 11px;
   }
 
-  /* Barra superior de acciones (solo pantalla) */
+  /* Barra de herramientas superior (solo pantalla) */
   .toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    max-width: 210mm;
+    margin: 0 auto 15px auto;
     background: var(--navy);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 16px;
+    border-radius: 6px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
     gap: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
   }
 
   .toolbar-title {
-    font-weight: 700;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-weight: bold;
+    font-size: 13px;
   }
 
   .toolbar-actions {
@@ -62,222 +56,213 @@
 
   .btn {
     border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    font-weight: 600;
-    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
+    font-size: 11px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     transition: opacity 0.2s;
   }
 
   .btn:hover { opacity: 0.9; }
-  .btn-pdf { background: #0284C7; color: white; }
-  .btn-csv { background: #15803D; color: white; }
-  .btn-logo { background: #475569; color: white; }
-  .btn-clear { background: #DC2626; color: white; }
-  .btn-add { background: var(--navy-light); color: white; padding: 4px 10px; font-size: 11px; margin-top: 5px; }
-
-  /* Contenedor principal de hojas */
-  .container {
-    max-width: 1050px;
-    margin: 20px auto;
-    padding: 0 15px 40px;
+  .btn-print { background: #22C55E; color: #fff; }
+  .btn-csv { background: #3B82F6; color: #fff; }
+  .btn-logo { background: #F59E0B; color: #fff; }
+  .btn-clear { background: #EF4444; color: #fff; }
+  .btn-add {
+    background: var(--navy-light);
+    color: white;
+    padding: 4px 8px;
+    font-size: 10px;
+    margin-top: 4px;
+  }
+  .btn-del {
+    background: #DC2626;
+    color: white;
+    padding: 2px 6px;
+    font-size: 9px;
+    border-radius: 3px;
   }
 
+  /* Contenedor de hoja A4 */
   .sheet {
-    background: var(--card);
-    padding: 20px;
-    margin-bottom: 24px;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-    border: 1px solid var(--border);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 20px auto;
+    background: white;
+    padding: 10mm 10mm;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: relative;
   }
 
-  /* Tablas estilo Excel corporativo */
+  /* Tablas estilo corporativo NPEC */
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   th, td {
-    border: 1px solid #94A3B8;
-    padding: 5px 6px;
+    border: 1px solid var(--border-color);
+    padding: 3px 5px;
     vertical-align: middle;
   }
 
-  th {
-    background-color: #E2E8F0;
-    color: #0F172A;
-    font-weight: 700;
-    text-align: center;
-    font-size: 11.5px;
-  }
-
-  .sec-header {
-    background-color: var(--navy) !important;
-    color: #FFFFFF !important;
-    text-align: left !important;
-    font-size: 12px;
-    padding: 6px 10px;
+  .section-title {
+    background-color: var(--navy);
+    color: white;
+    font-weight: bold;
+    text-align: left;
+    padding: 4px 6px;
+    font-size: 10.5px;
     letter-spacing: 0.3px;
-    text-transform: uppercase;
   }
 
   .sub-header {
-    background-color: var(--navy-light) !important;
-    color: #FFFFFF !important;
-    font-size: 11.5px;
-    text-align: center !important;
+    background-color: #DCE4F0;
+    color: var(--navy);
+    font-weight: bold;
+    text-align: center;
+    font-size: 9.5px;
   }
 
   .label-cell {
-    background-color: #F1F5F9;
-    font-weight: 700;
-    font-size: 11.5px;
-    color: #1E293B;
+    background-color: #EDF2F7;
+    font-weight: bold;
+    color: var(--navy);
+    font-size: 9.5px;
   }
 
-  /* Encabezado Principal */
-  .header-table td {
-    padding: 4px 8px;
+  /* Encabezado principal */
+  .header-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--navy);
+    text-align: center;
+  }
+
+  .header-subtitle {
+    font-size: 10px;
+    font-weight: bold;
+    color: #4A5568;
+    text-align: center;
   }
 
   .logo-box {
-    width: 170px;
-    text-align: center;
-    background: #FFFFFF;
+    width: 130px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     position: relative;
   }
 
   .logo-box img {
-    max-width: 155px;
-    max-height: 78px;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    display: block;
-    margin: 0 auto;
   }
 
   .logo-placeholder {
-    font-weight: 800;
-    color: var(--navy);
-    font-size: 16px;
-    line-height: 1.2;
-    padding: 10px 4px;
-  }
-
-  .logo-placeholder span {
-    display: block;
-    font-size: 9px;
-    font-weight: 600;
-    color: #475569;
-  }
-
-  .main-title-box {
-    background-color: var(--navy);
-    color: white;
     text-align: center;
-    padding: 10px !important;
+    color: var(--navy);
+    font-weight: bold;
+    font-size: 11px;
+    border: 1px dashed #94A3B8;
+    padding: 6px;
+    width: 100%;
+    cursor: pointer;
   }
 
-  .main-title-box h1 {
-    margin: 0;
-    font-size: 16px;
-    letter-spacing: 0.5px;
+  .global-kpi-box {
+    background: #E6F4EA;
+    border: 1.5px solid #1E8E3E !important;
+    text-align: center;
   }
 
-  .main-title-box p {
-    margin: 3px 0 0;
-    font-size: 12px;
-    font-weight: 600;
-    color: #CBD5E1;
+  .global-kpi-label {
+    font-size: 8.5px;
+    font-weight: bold;
+    color: #137333;
+    display: block;
   }
 
-  /* Inputs dentro de celdas */
-  input[type="text"],
-  input[type="number"],
-  input[type="date"],
-  select,
-  textarea {
+  .global-kpi-val {
+    font-size: 13px;
+    font-weight: bold;
+    color: #137333;
+  }
+
+  /* Inputs limpios */
+  input[type="text"], input[type="number"], input[type="date"], select, textarea {
     width: 100%;
     border: 1px solid transparent;
     background: transparent;
-    font-size: 12px;
-    color: #0F172A;
-    padding: 3px 4px;
-    border-radius: 3px;
+    font-size: 10px;
+    color: #1A202C;
+    padding: 2px;
   }
 
   input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--accent);
-    background: #F0F9FF;
+    background: #F0F7FF;
+    border: 1px solid var(--accent);
   }
 
   input[type="number"] {
-    text-align: center;
+    text-align: right;
+  }
+
+  .num-center {
+    text-align: center !important;
+  }
+
+  .calc-cell {
+    background-color: #F8FAFC;
+    font-weight: bold;
+    text-align: right;
+    color: var(--navy);
+    font-size: 10px;
+  }
+
+  .total-row td {
+    background-color: #E2E8F0;
+    font-weight: bold;
+    color: var(--navy);
   }
 
   textarea {
     resize: vertical;
     min-height: 36px;
-    line-height: 1.3;
   }
 
-  .calc-cell {
-    background-color: #F8FAFC;
-    font-weight: 700;
-    text-align: center;
-    color: var(--navy);
-  }
-
-  .total-row td {
-    background-color: #E2E8F0;
-    font-weight: 700;
-    color: #0F172A;
-  }
-
-  /* Cintillo Hoja 2 */
-  .sheet2-banner {
-    background: var(--navy);
-    color: white;
-    padding: 6px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    border-radius: 3px;
-  }
-
-  /* Cuadrícula de Fotos 2x2 */
+  /* Cuadrícula fotográfica 2x2 */
   .photo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
 
   .photo-card {
-    border: 1px solid #94A3B8;
-    background: #FFFFFF;
-    display: flex;
-    flex-direction: column;
+    border: 1px solid var(--border-color);
+    background: #fff;
   }
 
   .photo-frame {
-    height: 165px;
+    height: 145px;
     background: #F8FAFC;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid #94A3B8;
     cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .photo-frame img {
@@ -286,49 +271,47 @@
     object-fit: cover;
   }
 
-  .photo-upload-hint {
-    text-align: center;
+  .photo-hint {
     color: #64748B;
-    font-size: 11.5px;
+    font-size: 10px;
+    text-align: center;
     padding: 10px;
   }
 
   .photo-caption {
-    padding: 4px 6px;
-    background: #F1F5F9;
+    padding: 3px 5px;
+    background: #EDF2F7;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
   }
 
   .photo-caption span {
-    font-weight: 700;
-    font-size: 11px;
+    font-weight: bold;
+    color: var(--navy);
+    font-size: 9.5px;
     white-space: nowrap;
+  }
+
+  /* Bloque de firmas */
+  .sig-box {
+    height: 45px;
+  }
+
+  /* Cintillo continuidad hoja 2 */
+  .cont-banner {
+    background: #EDF2F7;
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5px;
+    font-weight: bold;
     color: var(--navy);
   }
 
-  /* Firmas */
-  .sign-table td {
-    text-align: center;
-    vertical-align: bottom;
-  }
-
-  .sign-space {
-    height: 52px;
-  }
-
-  .del-btn {
-    background: none;
-    border: none;
-    color: #DC2626;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 0 4px;
-  }
-
-  /* CONFIGURACIÓN DE IMPRESIÓN A4 EXACTA EN 2 HOJAS */
+  /* Estilos de impresión A4 exactos */
   @page {
     size: A4 portrait;
     margin: 8mm;
@@ -337,783 +320,651 @@
   @media print {
     body {
       background: white;
-      font-size: 10px;
+      padding: 0;
+      margin: 0;
     }
-
-    .toolbar, .no-print, .btn-add, .del-btn {
+    .toolbar, .no-print {
       display: none !important;
     }
-
-    .container {
-      max-width: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
     .sheet {
-      box-shadow: none;
-      border: none;
-      padding: 0;
+      width: 100%;
+      min-height: auto;
       margin: 0;
-      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
     }
-
     .page-break {
       page-break-before: always;
       break-before: page;
     }
-
-    th, td {
-      padding: 3px 4px;
-      font-size: 9.5px;
-      border: 1px solid #64748B;
-    }
-
-    .sec-header {
-      font-size: 10px;
-      padding: 4px 6px;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    .sub-header, .main-title-box, .sheet2-banner, th, .label-cell, .total-row td, .calc-cell {
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select,
-    textarea {
+    input, select, textarea {
       border: none !important;
       background: transparent !important;
-      padding: 1px 2px;
-      font-size: 9.5px;
       appearance: none;
       -webkit-appearance: none;
     }
-
-    textarea {
-      min-height: 24px;
-      resize: none;
-    }
-
-    .photo-frame {
-      height: 145px;
-    }
-
-    .photo-upload-hint {
+    select::-ms-expand {
       display: none;
     }
-
-    .sign-space {
-      height: 42px;
+    .photo-hint {
+      color: #94A3B8;
     }
   }
 </style>
 </head>
 <body>
 
-  <!-- Barra de Control (Oculta al imprimir) -->
-  <div class="toolbar no-print">
-    <div class="toolbar-title">
-      <span>📋 RDO DIGITAL — NEW PRIME EAGLE CONSTRUCTION SpA</span>
+<!-- Barra de acciones (No se imprime) -->
+<div class="toolbar no-print">
+  <div class="toolbar-title">RDO DIGITAL — NEW PRIME EAGLE CONSTRUCTION SpA</div>
+  <div class="toolbar-actions">
+    <button class="btn btn-logo" onclick="document.getElementById('logoInput').click()">🖼️ Cargar Logo</button>
+    <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+    <button class="btn btn-print" onclick="window.print()">🖨️ Guardar PDF / Imprimir (A4 - 2 Hojas)</button>
+    <button class="btn btn-csv" onclick="exportToCSV()">📊 Exportar Excel (.CSV)</button>
+    <button class="btn btn-clear" onclick="clearForm()">🗑️ Limpiar</button>
+  </div>
+</div>
+
+<!-- ==================== HOJA 1 ==================== -->
+<div class="sheet" id="sheet1">
+  <!-- Encabezado General -->
+  <table>
+    <tr>
+      <td rowspan="4" style="width: 135px; text-align: center; padding: 2px;">
+        <div class="logo-box" onclick="document.getElementById('logoInput').click()" title="Clic para cambiar logo">
+          <img id="companyLogo" src="logo.png" alt="Logo NPEC" onerror="this.style.display='none'; document.getElementById('logoPlaceholder').style.display='block';">
+          <div id="logoPlaceholder" class="logo-placeholder" style="display:none;">
+            NPEC SpA<br><span style="font-size:8px; font-weight:normal;">(Clic para subir logo)</span>
+          </div>
+        </div>
+      </td>
+      <td colspan="4" rowspan="2" style="padding: 4px;">
+        <div class="header-title">REPORTE DIARIO DE OBRA (RDO)</div>
+        <div class="header-subtitle">NEW PRIME EAGLE CONSTRUCTION SpA</div>
+      </td>
+      <td class="label-cell" style="width: 85px;">N° REPORTE:</td>
+      <td style="width: 95px;"><input type="text" id="reportNo" value="RDO-001" style="font-weight:bold; text-align:center;"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">FECHA:</td>
+      <td><input type="date" id="reportDate" onchange="updateDayName(); syncHeader()"></td>
+    </tr>
+    <tr>
+      <td class="label-cell" style="width: 115px;">PROYECTO / OBRA:</td>
+      <td colspan="3"><input type="text" id="projectName" placeholder="Ingrese nombre del proyecto" oninput="syncHeader()"></td>
+      <td class="label-cell">DÍA:</td>
+      <td><input type="text" id="dayName" readonly style="text-align:center;"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">CONTRATO / WBS:</td>
+      <td colspan="3"><input type="text" id="contractCode" placeholder="N° de Contrato o Código"></td>
+      <td rowspan="2" colspan="2" class="global-kpi-box">
+        <span class="global-kpi-label">AVANCE GLOBAL REAL</span>
+        <span class="global-kpi-val" id="headerGlobalProgress">0.00%</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="label-cell">CLIENTE / MANDANTE:</td>
+      <td colspan="2"><input type="text" id="clientName" placeholder="Nombre del Cliente"></td>
+      <td class="label-cell" style="width: 75px;">CLIMA AM/PM:</td>
+      <td>
+        <div style="display:flex; gap:2px;">
+          <select id="weatherAm">
+            <option value="Despejado">AM: Despejado</option>
+            <option value="Nublado">AM: Nublado</option>
+            <option value="Lluvia">AM: Lluvia</option>
+            <option value="Viento">AM: Viento</option>
+          </select>
+          <select id="weatherPm">
+            <option value="Despejado">PM: Despejado</option>
+            <option value="Nublado">PM: Nublado</option>
+            <option value="Lluvia">PM: Lluvia</option>
+            <option value="Viento">PM: Viento</option>
+          </select>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Sección 1: HSE -->
+  <table>
+    <tr>
+      <td colspan="5" class="section-title">1. SEGURIDAD, SALUD OCUPACIONAL Y MEDIO AMBIENTE (HSE)</td>
+    </tr>
+    <tr class="sub-header">
+      <td>Días Sin Accidentes (LTI Free)</td>
+      <td>Incidentes / Cuasi Accidentes</td>
+      <td>Permisos de Trabajo (PTW)</td>
+      <td>Inspecciones HSE Realizadas</td>
+      <td>Asistentes Charla 5 Min</td>
+    </tr>
+    <tr>
+      <td><input type="number" id="hseLti" value="0" min="0" class="num-center"></td>
+      <td><input type="number" id="hseIncidents" value="0" min="0" class="num-center"></td>
+      <td><input type="number" id="hsePtw" value="0" min="0" class="num-center"></td>
+      <td><input type="number" id="hseInspections" value="0" min="0" class="num-center"></td>
+      <td><input type="number" id="hseAttendees" value="0" min="0" class="num-center"></td>
+    </tr>
+    <tr>
+      <td class="label-cell">Tema Charla 5 Minutos:</td>
+      <td colspan="4"><input type="text" id="hseTopic" value="Uso correcto de EPP, orden y aseo en frentes de trabajo y prevención de riesgos en maniobras."></td>
+    </tr>
+  </table>
+
+  <!-- Sección 2A y 2B: Actividades Hoy y Mañana -->
+  <table>
+    <tr>
+      <td colspan="3" class="section-title" style="width: 50%; border-right: 2px solid white;">2A. AVANCE DEL DÍA DE HOY (ACTIVIDADES EJECUTADAS)</td>
+      <td colspan="3" class="section-title" style="width: 50%;">2B. PROGRAMACIÓN DE TAREAS PARA EL DÍA SIGUIENTE</td>
+    </tr>
+    <tr class="sub-header">
+      <td style="width: 11%;">Área / WBS</td>
+      <td style="width: 30%;">Descripción Actividad Ejecutada Hoy</td>
+      <td style="width: 9%; border-right: 2px solid var(--navy);">% / Estado</td>
+      <td style="width: 11%;">Área / WBS</td>
+      <td style="width: 28%;">Descripción Tarea Programada Mañana</td>
+      <td style="width: 11%;">Responsable</td>
+    </tr>
+    <tbody id="activitiesBody">
+      <!-- Filas generadas por JS -->
+    </tbody>
+  </table>
+  <div class="no-print" style="margin-bottom: 6px; text-align: right;">
+    <button class="btn btn-add" onclick="addActivityRow()">+ Agregar Fila Actividad</button>
+  </div>
+
+  <!-- Sección 3: Control de Avance Físico Ponderado -->
+  <table>
+    <tr>
+      <td colspan="10" class="section-title">3. CONTROL DE AVANCE FÍSICO POR PARTIDA Y PONDERACIÓN GLOBAL (METRADOS)</td>
+    </tr>
+    <tr class="sub-header">
+      <td style="width: 8%;">Ítem / WBS</td>
+      <td style="width: 28%;">Descripción de la Partida</td>
+      <td style="width: 6%;">Unid.</td>
+      <td style="width: 9%;">Cant. Total Contrato</td>
+      <td style="width: 9%;">Acum. Anterior</td>
+      <td style="width: 9%;">Ejecutado Hoy</td>
+      <td style="width: 9%;">Acum. Actual</td>
+      <td style="width: 7%;">% Avance Partida</td>
+      <td style="width: 7%;">Peso / Incid. (%)</td>
+      <td style="width: 8%;">% Avance Ponderado</td>
+    </tr>
+    <tbody id="wbsBody">
+      <!-- Filas generadas por JS -->
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="8" style="text-align: right;">TOTAL INCIDENCIA / AVANCE FÍSICO GLOBAL DE OBRA (%):</td>
+        <td id="totalWeightCell" style="text-align: right;">0.00%</td>
+        <td id="totalGlobalCell" style="text-align: right; background: #D4EDDA; color: #155724;">0.00%</td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="no-print" style="text-align: right;">
+    <button class="btn btn-add" onclick="addWbsRow()">+ Agregar Partida WBS</button>
+  </div>
+</div>
+
+<!-- ==================== HOJA 2 ==================== -->
+<div class="sheet page-break" id="sheet2">
+  <!-- Cintillo de continuidad -->
+  <div class="cont-banner">
+    <span>NEW PRIME EAGLE CONSTRUCTION SpA — PROYECTO: <span id="syncProject">[Nombre del Proyecto]</span></span>
+    <span>REPORTE N°: <span id="syncReport">RDO-001</span> | FECHA: <span id="syncDate">--/--/----</span></span>
+  </div>
+
+  <!-- Sección 4: Control de Mano de Obra -->
+  <table>
+    <tr>
+      <td colspan="9" class="section-title">4. CONTROL DE MANO DE OBRA Y HORAS-HOMBRE (HH)</td>
+    </tr>
+    <tr class="sub-header">
+      <td style="width: 10%;">Tipo</td>
+      <td style="width: 34%;">Cargo / Especialidad</td>
+      <td style="width: 8%;">Turno Día</td>
+      <td style="width: 8%;">Turno Noche</td>
+      <td style="width: 8%;">Total Pers.</td>
+      <td style="width: 8%;">Horas Jorn.</td>
+      <td style="width: 8%;">Total HH Hoy</td>
+      <td style="width: 8%;">HH Acum. Ant.</td>
+      <td style="width: 8%;">HH Acum. Act.</td>
+    </tr>
+    <tbody id="manpowerBody">
+      <!-- Filas generadas por JS -->
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="2" style="text-align: right;">TOTAL MANO DE OBRA / HORAS-HOMBRE:</td>
+        <td id="totDayStaff" style="text-align: right;">0</td>
+        <td id="totNightStaff" style="text-align: right;">0</td>
+        <td id="totAllStaff" style="text-align: right;">0</td>
+        <td>-</td>
+        <td id="totHhToday" style="text-align: right;">0</td>
+        <td id="totHhPrev" style="text-align: right;">0</td>
+        <td id="totHhCurr" style="text-align: right;">0</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- Sección 5: Control de Maquinaria -->
+  <table>
+    <tr>
+      <td colspan="7" class="section-title">5. CONTROL DE MAQUINARIA Y EQUIPOS EN OBRA</td>
+    </tr>
+    <tr class="sub-header">
+      <td style="width: 28%;">Descripción del Equipo / Maquinaria</td>
+      <td style="width: 13%;">Código / Patente</td>
+      <td style="width: 7%;">Cant.</td>
+      <td style="width: 9%;">Hrs Operat.</td>
+      <td style="width: 9%;">Hrs Stand-By</td>
+      <td style="width: 9%;">Hrs Mant.</td>
+      <td style="width: 25%;">Observaciones / Frente</td>
+    </tr>
+    <tbody id="equipmentBody">
+      <!-- Filas generadas por JS -->
+    </tbody>
+  </table>
+  <div class="no-print" style="margin-bottom: 6px; text-align: right;">
+    <button class="btn btn-add" onclick="addEquipmentRow()">+ Agregar Equipo</button>
+  </div>
+
+  <!-- Sección 6: Restricciones y Observaciones -->
+  <table>
+    <tr>
+      <td class="section-title">6. RESTRICCIONES, INTERFERENCIAS Y OBSERVACIONES DEL DÍA</td>
+    </tr>
+    <tr>
+      <td>
+        <textarea id="remarksText" placeholder="Registrar aquí interferencias, falta de información, condiciones climáticas adversas o instrucciones de inspección..."></textarea>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Sección 7: Registro Fotográfico (Hasta 4 Fotos) -->
+  <table>
+    <tr>
+      <td class="section-title">7. REGISTRO FOTOGRÁFICO DEL AVANCE (HASTA 4 FOTOGRAFÍAS)</td>
+    </tr>
+  </table>
+  <div class="photo-grid">
+    <!-- Foto 1 -->
+    <div class="photo-card">
+      <div class="photo-frame" onclick="document.getElementById('photoInput1').click()">
+        <img id="photoPreview1" style="display:none;">
+        <div id="photoHint1" class="photo-hint">📷 Clic para cargar Fotografía N° 1</div>
+        <input type="file" id="photoInput1" accept="image/*" style="display:none" onchange="loadPhoto(event, 1)">
+      </div>
+      <div class="photo-caption">
+        <span>Foto 1:</span>
+        <input type="text" id="photoDesc1" placeholder="Ubicación / Descripción...">
+      </div>
     </div>
-    <div class="toolbar-actions">
-      <button class="btn btn-logo" onclick="document.getElementById('logoInput').click()">🖼️ Cargar Logo NPEC</button>
-      <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
-      <button class="btn btn-pdf" onclick="prepareAndPrint()">🖨️ Guardar PDF / Imprimir (A4 - 2 Hojas)</button>
-      <button class="btn btn-csv" onclick="exportCSV()">📊 Exportar Datos Excel (.CSV)</button>
-      <button class="btn btn-clear" onclick="clearForm()">🗑️ Limpiar</button>
+    <!-- Foto 2 -->
+    <div class="photo-card">
+      <div class="photo-frame" onclick="document.getElementById('photoInput2').click()">
+        <img id="photoPreview2" style="display:none;">
+        <div id="photoHint2" class="photo-hint">📷 Clic para cargar Fotografía N° 2</div>
+        <input type="file" id="photoInput2" accept="image/*" style="display:none" onchange="loadPhoto(event, 2)">
+      </div>
+      <div class="photo-caption">
+        <span>Foto 2:</span>
+        <input type="text" id="photoDesc2" placeholder="Ubicación / Descripción...">
+      </div>
+    </div>
+    <!-- Foto 3 -->
+    <div class="photo-card">
+      <div class="photo-frame" onclick="document.getElementById('photoInput3').click()">
+        <img id="photoPreview3" style="display:none;">
+        <div id="photoHint3" class="photo-hint">📷 Clic para cargar Fotografía N° 3</div>
+        <input type="file" id="photoInput3" accept="image/*" style="display:none" onchange="loadPhoto(event, 3)">
+      </div>
+      <div class="photo-caption">
+        <span>Foto 3:</span>
+        <input type="text" id="photoDesc3" placeholder="Ubicación / Descripción...">
+      </div>
+    </div>
+    <!-- Foto 4 -->
+    <div class="photo-card">
+      <div class="photo-frame" onclick="document.getElementById('photoInput4').click()">
+        <img id="photoPreview4" style="display:none;">
+        <div id="photoHint4" class="photo-hint">📷 Clic para cargar Fotografía N° 4</div>
+        <input type="file" id="photoInput4" accept="image/*" style="display:none" onchange="loadPhoto(event, 4)">
+      </div>
+      <div class="photo-caption">
+        <span>Foto 4:</span>
+        <input type="text" id="photoDesc4" placeholder="Ubicación / Descripción...">
+      </div>
     </div>
   </div>
 
-  <div class="container">
-
-    <!-- ==================== HOJA 1 ==================== -->
-    <div class="sheet" id="sheet1">
-      <!-- Encabezado General -->
-      <table class="header-table">
-        <tr>
-          <td rowspan="4" class="logo-box" onclick="document.getElementById('logoInput').click()" title="Clic para cambiar logo">
-            <img id="logoPreview" src="logo.png" alt="Logo NPEC" style="display:none;" onload="this.style.display='block'; document.getElementById('logoFallback').style.display='none';" onerror="this.style.display='none';">
-            <div id="logoFallback" class="logo-placeholder">
-              NPEC
-              <span>NEW PRIME EAGLE CONSTRUCTION SpA</span>
-            </div>
-          </td>
-          <td colspan="4" class="main-title-box">
-            <h1>REPORTE DIARIO DE OBRA (RDO)</h1>
-            <p>NEW PRIME EAGLE CONSTRUCTION SpA</p>
-          </td>
-          <td class="label-cell" style="width:95px;">N° REPORTE:</td>
-          <td style="width:110px;"><input type="text" id="reportNo" value="RDO-001" oninput="syncBanner(); saveData();"></td>
-        </tr>
-        <tr>
-          <td class="label-cell" style="width:135px;">PROYECTO / OBRA:</td>
-          <td colspan="3"><input type="text" id="projectName" placeholder="Nombre del Proyecto" oninput="syncBanner(); saveData();"></td>
-          <td class="label-cell">FECHA:</td>
-          <td><input type="date" id="reportDate" onchange="updateDayOfWeek(); syncBanner(); saveData();"></td>
-        </tr>
-        <tr>
-          <td class="label-cell">CONTRATO / CÓDIGO:</td>
-          <td colspan="3"><input type="text" id="contractCode" placeholder="N° Contrato / WBS" oninput="saveData();"></td>
-          <td class="label-cell">DÍA:</td>
-          <td><input type="text" id="dayName" readonly style="font-weight:600;"></td>
-        </tr>
-        <tr>
-          <td class="label-cell">CLIENTE / MANDANTE:</td>
-          <td colspan="3"><input type="text" id="clientName" placeholder="Nombre del Cliente / Mandante" oninput="saveData();"></td>
-          <td class="label-cell">REVISIÓN:</td>
-          <td><input type="text" id="revisionNo" value="0" oninput="saveData();"></td>
-        </tr>
-        <tr>
-          <td class="label-cell">FRENTE / ÁREA:</td>
-          <td colspan="2"><input type="text" id="workArea" placeholder="Frente de trabajo principal" oninput="saveData();"></td>
-          <td class="label-cell" style="width:85px;">CLIMA AM / PM:</td>
-          <td style="width:155px;">
-            <div style="display:flex; gap:3px;">
-              <select id="weatherAM" onchange="saveData()">
-                <option value="Despejado">AM: Despejado</option>
-                <option value="Nublado">AM: Nublado</option>
-                <option value="Lluvia">AM: Lluvia</option>
-                <option value="Viento">AM: Viento</option>
-              </select>
-              <select id="weatherPM" onchange="saveData()">
-                <option value="Despejado">PM: Despejado</option>
-                <option value="Nublado">PM: Nublado</option>
-                <option value="Lluvia">PM: Lluvia</option>
-                <option value="Viento">PM: Viento</option>
-              </select>
-            </div>
-          </td>
-          <td class="label-cell">TERRENO:</td>
-          <td>
-            <select id="groundCond" onchange="saveData()">
-              <option value="Seco">Seco</option>
-              <option value="Húmedo">Húmedo</option>
-              <option value="Barroso">Barroso</option>
-              <option value="Congelado">Congelado</option>
-            </select>
-          </td>
-        </tr>
-      </table>
-
-      <!-- 1. Seguridad HSE -->
-      <table>
-        <tr>
-          <th colspan="5" class="sec-header">1. SEGURIDAD, SALUD OCUPACIONAL Y MEDIO AMBIENTE (HSE)</th>
-        </tr>
-        <tr>
-          <th>Días Sin Accidentes (LTI Free)</th>
-          <th>Incidentes / Cuasi Accidentes</th>
-          <th>Permisos de Trabajo (PTW)</th>
-          <th>Inspecciones HSE Realizadas</th>
-          <th>Asistentes Charla 5 Min</th>
-        </tr>
-        <tr>
-          <td><input type="number" id="hseLti" value="0" min="0" oninput="saveData()"></td>
-          <td><input type="number" id="hseIncidents" value="0" min="0" oninput="saveData()"></td>
-          <td><input type="number" id="hsePtw" value="0" min="0" oninput="saveData()"></td>
-          <td><input type="number" id="hseInspections" value="0" min="0" oninput="saveData()"></td>
-          <td><input type="number" id="hseTalkCount" value="0" min="0" oninput="saveData()"></td>
-        </tr>
-        <tr>
-          <td class="label-cell">Tema Charla 5 Minutos:</td>
-          <td colspan="4"><input type="text" id="hseTalkTopic" value="Uso correcto de EPP, orden y aseo en frentes de trabajo y prevención de riesgos en maniobras." oninput="saveData()"></td>
-        </tr>
-      </table>
-
-      <!-- 2A y 2B. Avance Hoy y Programación Mañana -->
-      <table>
-        <tr>
-          <th colspan="3" class="sec-header" style="width:50%;">2A. AVANCE DEL DÍA DE HOY (ACTIVIDADES EJECUTADAS)</th>
-          <th colspan="3" class="sec-header" style="width:50%;">2B. PROGRAMACIÓN DE TAREAS PARA EL DÍA SIGUIENTE</th>
-        </tr>
-        <tr>
-          <th style="width:11%;">Área / WBS</th>
-          <th style="width:31%;">Descripción de la Actividad Ejecutada Hoy</th>
-          <th style="width:8%;">% / Est.</th>
-          <th style="width:11%;">Área / WBS</th>
-          <th style="width:28%;">Descripción de la Tarea Programada Mañana</th>
-          <th style="width:11%;">Responsable</th>
-        </tr>
-        <tbody id="activitiesBody">
-          <!-- Filas generadas por JS -->
-        </tbody>
-      </table>
-      <button type="button" class="btn btn-add no-print" onclick="addActivityRow()">+ Agregar Fila de Actividad</button>
-
-      <!-- 3. Control de Avance Físico por Partida -->
-      <table style="margin-top:8px;">
-        <tr>
-          <th colspan="9" class="sec-header">3. CONTROL DE AVANCE FÍSICO POR PARTIDA (METRADOS)</th>
-        </tr>
-        <tr>
-          <th style="width:10%;">Ítem / WBS</th>
-          <th style="width:31%;">Descripción de la Partida</th>
-          <th style="width:7%;">Unidad</th>
-          <th style="width:10%;">Cant. Total<br>Contrato</th>
-          <th style="width:10%;">Acumulado<br>Anterior</th>
-          <th style="width:10%;">Ejecutado<br>Hoy</th>
-          <th style="width:11%;">Acumulado<br>Actual</th>
-          <th style="width:9%;">% Avance<br>Real</th>
-          <th class="no-print" style="width:2%;"></th>
-        </tr>
-        <tbody id="progressBody">
-          <!-- Filas generadas por JS -->
-        </tbody>
-      </table>
-      <button type="button" class="btn btn-add no-print" onclick="addProgressRow()">+ Agregar Partida WBS</button>
-    </div>
-
-    <!-- ==================== HOJA 2 ==================== -->
-    <div class="sheet page-break" id="sheet2">
-      <!-- Cintillo Continuidad Hoja 2 -->
-      <div class="sheet2-banner">
-        <span>NEW PRIME EAGLE CONSTRUCTION SpA — PROYECTO: <strong id="bannerProject">[Nombre del Proyecto]</strong></span>
-        <span>REPORTE N°: <strong id="bannerReport">RDO-001</strong> | FECHA: <strong id="bannerDate">--/--/----</strong></span>
-      </div>
-
-      <!-- 4. Control de Mano de Obra -->
-      <table>
-        <tr>
-          <th colspan="9" class="sec-header">4. CONTROL DE MANO DE OBRA Y HORAS-HOMBRE (HH)</th>
-        </tr>
-        <tr>
-          <th style="width:10%;">Tipo</th>
-          <th style="width:34%;">Cargo / Especialidad</th>
-          <th style="width:8%;">Turno<br>Día</th>
-          <th style="width:8%;">Turno<br>Noche</th>
-          <th style="width:8%;">Total<br>Pers.</th>
-          <th style="width:8%;">Horas<br>Jorn.</th>
-          <th style="width:8%;">Total HH<br>Hoy</th>
-          <th style="width:8%;">HH Acum.<br>Anterior</th>
-          <th style="width:8%;">HH Acum.<br>Actual</th>
-        </tr>
-        <tbody id="manpowerBody">
-          <!-- Filas generadas por JS -->
-        </tbody>
-        <tr class="total-row">
-          <td colspan="2" style="text-align:right; padding-right:8px;">TOTAL MANO DE OBRA / HORAS-HOMBRE:</td>
-          <td id="totDayStaff" style="text-align:center;">0</td>
-          <td id="totNightStaff" style="text-align:center;">0</td>
-          <td id="totAllStaff" style="text-align:center;">0</td>
-          <td style="text-align:center;">-</td>
-          <td id="totTodayHH" style="text-align:center;">0</td>
-          <td id="totPrevHH" style="text-align:center;">0</td>
-          <td id="totCurrHH" style="text-align:center;">0</td>
-        </tr>
-      </table>
-
-      <!-- 5. Control de Maquinaria -->
-      <table>
-        <tr>
-          <th colspan="8" class="sec-header">5. CONTROL DE MAQUINARIA Y EQUIPOS EN OBRA</th>
-        </tr>
-        <tr>
-          <th style="width:28%;">Descripción del Equipo / Maquinaria</th>
-          <th style="width:14%;">Código / Patente</th>
-          <th style="width:7%;">Cant.</th>
-          <th style="width:9%;">Horas<br>Operat.</th>
-          <th style="width:9%;">Horas<br>Stand-By</th>
-          <th style="width:9%;">Horas<br>Mant.</th>
-          <th style="width:22%;">Observaciones / Frente</th>
-          <th class="no-print" style="width:2%;"></th>
-        </tr>
-        <tbody id="equipmentBody">
-          <!-- Filas generadas por JS -->
-        </tbody>
-      </table>
-      <button type="button" class="btn btn-add no-print" onclick="addEquipmentRow()">+ Agregar Equipo</button>
-
-      <!-- 6. Restricciones e Interferencias -->
-      <table style="margin-top:8px;">
-        <tr>
-          <th class="sec-header">6. RESTRICCIONES, INTERFERENCIAS Y OBSERVACIONES DEL DÍA</th>
-        </tr>
-        <tr>
-          <td>
-            <textarea id="restrictionsText" rows="2" placeholder="Registrar aquí interferencias, falta de información, condiciones climáticas adversas o instrucciones de inspección..." oninput="saveData()">• Sin restricciones relevantes en la jornada.</textarea>
-          </td>
-        </tr>
-      </table>
-
-      <!-- 7. Registro Fotográfico (Hasta 4 Fotos) -->
-      <table>
-        <tr>
-          <th class="sec-header">7. REGISTRO FOTOGRÁFICO DEL AVANCE (HASTA 4 FOTOGRAFÍAS)</th>
-        </tr>
-      </table>
-      <div class="photo-grid">
-        <!-- Foto 1 -->
-        <div class="photo-card">
-          <div class="photo-frame" onclick="document.getElementById('photoInput1').click()">
-            <img id="photoImg1" style="display:none;">
-            <div class="photo-upload-hint" id="photoHint1">📷 Clic para cargar Fotografía N° 1</div>
-            <input type="file" id="photoInput1" accept="image/*" style="display:none" onchange="handlePhotoUpload(event, 1)">
-          </div>
-          <div class="photo-caption">
-            <span>Foto 1:</span>
-            <input type="text" id="photoDesc1" placeholder="Ubicación / Descripción del avance..." oninput="saveData()">
-          </div>
-        </div>
-        <!-- Foto 2 -->
-        <div class="photo-card">
-          <div class="photo-frame" onclick="document.getElementById('photoInput2').click()">
-            <img id="photoImg2" style="display:none;">
-            <div class="photo-upload-hint" id="photoHint2">📷 Clic para cargar Fotografía N° 2</div>
-            <input type="file" id="photoInput2" accept="image/*" style="display:none" onchange="handlePhotoUpload(event, 2)">
-          </div>
-          <div class="photo-caption">
-            <span>Foto 2:</span>
-            <input type="text" id="photoDesc2" placeholder="Ubicación / Descripción del avance..." oninput="saveData()">
-          </div>
-        </div>
-        <!-- Foto 3 -->
-        <div class="photo-card">
-          <div class="photo-frame" onclick="document.getElementById('photoInput3').click()">
-            <img id="photoImg3" style="display:none;">
-            <div class="photo-upload-hint" id="photoHint3">📷 Clic para cargar Fotografía N° 3</div>
-            <input type="file" id="photoInput3" accept="image/*" style="display:none" onchange="handlePhotoUpload(event, 3)">
-          </div>
-          <div class="photo-caption">
-            <span>Foto 3:</span>
-            <input type="text" id="photoDesc3" placeholder="Ubicación / Descripción del avance..." oninput="saveData()">
-          </div>
-        </div>
-        <!-- Foto 4 -->
-        <div class="photo-card">
-          <div class="photo-frame" onclick="document.getElementById('photoInput4').click()">
-            <img id="photoImg4" style="display:none;">
-            <div class="photo-upload-hint" id="photoHint4">📷 Clic para cargar Fotografía N° 4</div>
-            <input type="file" id="photoInput4" accept="image/*" style="display:none" onchange="handlePhotoUpload(event, 4)">
-          </div>
-          <div class="photo-caption">
-            <span>Foto 4:</span>
-            <input type="text" id="photoDesc4" placeholder="Ubicación / Descripción del avance..." oninput="saveData()">
-          </div>
-        </div>
-      </div>
-
-      <!-- Bloque de Firmas -->
-      <table class="sign-table">
-        <tr>
-          <th style="width:33.3%;">ELABORADO POR (NPEC SpA)</th>
-          <th style="width:33.3%;">REVISADO POR (JEFE DE TERRENO / QA-QC)</th>
-          <th style="width:33.3%;">APROBADO POR (INSPECCIÓN / CLIENTE)</th>
-        </tr>
-        <tr>
-          <td class="sign-space"></td>
-          <td class="sign-space"></td>
-          <td class="sign-space"></td>
-        </tr>
-        <tr>
-          <td><input type="text" id="sign1Name" placeholder="Nombre y Cargo" style="text-align:center;" oninput="saveData()"></td>
-          <td><input type="text" id="sign2Name" placeholder="Nombre y Cargo" style="text-align:center;" oninput="saveData()"></td>
-          <td><input type="text" id="sign3Name" placeholder="Nombre y Cargo" style="text-align:center;" oninput="saveData()"></td>
-        </tr>
-        <tr>
-          <td style="font-size:10px; color:#475569;">Firma y Fecha</td>
-          <td style="font-size:10px; color:#475569;">Firma y Fecha</td>
-          <td style="font-size:10px; color:#475569;">Firma y Fecha</td>
-        </tr>
-      </table>
-    </div>
-
-  </div>
+  <!-- Bloque de Firmas -->
+  <table>
+    <tr class="sub-header">
+      <td style="width: 33.3%;">ELABORADO POR (NPEC SpA)</td>
+      <td style="width: 33.3%;">REVISADO POR (JEFE DE TERRENO / QA-QC)</td>
+      <td style="width: 33.3%;">APROBADO POR (INSPECCIÓN / CLIENTE)</td>
+    </tr>
+    <tr>
+      <td class="sig-box"></td>
+      <td class="sig-box"></td>
+      <td class="sig-box"></td>
+    </tr>
+    <tr>
+      <td><input type="text" id="sigPrep" placeholder="Nombre y Cargo"></td>
+      <td><input type="text" id="sigRev" placeholder="Nombre y Cargo"></td>
+      <td><input type="text" id="sigApp" placeholder="Nombre y Cargo"></td>
+    </tr>
+  </table>
+</div>
 
 <script>
-  const defaultManpower = [
-    { type: 'Indirecto', role: 'Jefe de Terreno / Ingenieros / Supervisión', day: 0, night: 0, hours: 9, prevHH: 0 },
-    { type: 'Indirecto', role: 'Prevención de Riesgos (HSE) / Calidad (QA-QC)', day: 0, night: 0, hours: 9, prevHH: 0 },
-    { type: 'Directo', role: 'Capataces / Maestros Mayores', day: 0, night: 0, hours: 9, prevHH: 0 },
-    { type: 'Directo', role: 'Maestros Primera / Segunda (Obras Civiles / Montaje)', day: 0, night: 0, hours: 9, prevHH: 0 },
-    { type: 'Directo', role: 'Operadores de Maquinaria / Riggers', day: 0, night: 0, hours: 9, prevHH: 0 },
-    { type: 'Directo', role: 'Jornales / Ayudantes', day: 0, night: 0, hours: 9, prevHH: 0 }
+  const defaultRoles = [
+    { type: 'Indirecto', role: 'Jefe de Terreno / Ingenieros / Supervisión' },
+    { type: 'Indirecto', role: 'Prevención de Riesgos (HSE) / Calidad (QA-QC)' },
+    { type: 'Directo', role: 'Capataces / Maestros Mayores' },
+    { type: 'Directo', role: 'Maestros Primera / Segunda (Obras Civiles / Montaje)' },
+    { type: 'Directo', role: 'Operadores de Maquinaria / Riggers' },
+    { type: 'Directo', role: 'Jornales / Ayudantes' }
   ];
 
-  function init() {
+  // Inicialización
+  window.onload = function() {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('reportDate').value = today;
-    updateDayOfWeek();
+    updateDayName();
 
-    // Inicializar filas por defecto
     for (let i = 0; i < 6; i++) addActivityRow();
-    for (let i = 0; i < 5; i++) addProgressRow();
-    defaultManpower.forEach(m => addManpowerRow(m));
-    for (let i = 0; i < 4; i++) addEquipmentRow();
+    for (let i = 0; i < 7; i++) addWbsRow();
+    defaultRoles.forEach(r => addManpowerRow(r.type, r.role));
+    for (let i = 0; i < 5; i++) addEquipmentRow();
 
-    loadSavedData();
-    syncBanner();
-    recalcManpower();
-  }
+    loadFromLocal();
+    syncHeader();
+    recalcAll();
+  };
 
-  function updateDayOfWeek() {
-    const dateVal = document.getElementById('reportDate').value;
-    if (!dateVal) return;
+  function updateDayName() {
+    const val = document.getElementById('reportDate').value;
+    if (!val) return;
     const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    const parts = dateVal.split('-');
-    const d = new Date(parts[0], parts[1] - 1, parts[2]);
+    const d = new Date(val + 'T12:00:00');
     document.getElementById('dayName').value = days[d.getDay()];
   }
 
-  function syncBanner() {
-    const proj = document.getElementById('projectName').value.trim() || '[Nombre del Proyecto]';
-    const rep = document.getElementById('reportNo').value.trim() || 'RDO-001';
-    const dateVal = document.getElementById('reportDate').value;
-    let formattedDate = '--/--/----';
-    if (dateVal) {
-      const p = dateVal.split('-');
-      formattedDate = `${p[2]}/${p[1]}/${p[0]}`;
-    }
-    document.getElementById('bannerProject').textContent = proj;
-    document.getElementById('bannerReport').textContent = rep;
-    document.getElementById('bannerDate').textContent = formattedDate;
+  function syncHeader() {
+    const proj = document.getElementById('projectName').value || '[Nombre del Proyecto]';
+    const rep = document.getElementById('reportNo').value || 'RDO-001';
+    const dt = document.getElementById('reportDate').value || '--/--/----';
+    document.getElementById('syncProject').innerText = proj;
+    document.getElementById('syncReport').innerText = rep;
+    document.getElementById('syncDate').innerText = dt;
+    saveToLocal();
   }
 
-  function addActivityRow(data = {}) {
+  // Filas Actividades Hoy/Mañana
+  function addActivityRow() {
     const tbody = document.getElementById('activitiesBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" class="act-wbs1" value="${data.wbs1 || ''}" placeholder="WBS" oninput="saveData()"></td>
-      <td><input type="text" class="act-desc1" value="${data.desc1 || ''}" placeholder="Actividad ejecutada..." oninput="saveData()"></td>
-      <td><input type="text" class="act-pct1" value="${data.pct1 || ''}" placeholder="100%" style="text-align:center;" oninput="saveData()"></td>
-      <td><input type="text" class="act-wbs2" value="${data.wbs2 || ''}" placeholder="WBS" oninput="saveData()"></td>
-      <td><input type="text" class="act-desc2" value="${data.desc2 || ''}" placeholder="Tarea programada..." oninput="saveData()"></td>
-      <td><input type="text" class="act-resp2" value="${data.resp2 || ''}" placeholder="Supervisor" oninput="saveData()"></td>
+      <td><input type="text" class="act-wbs-today" oninput="saveToLocal()"></td>
+      <td><input type="text" class="act-desc-today" oninput="saveToLocal()"></td>
+      <td style="border-right: 2px solid var(--navy);"><input type="text" class="act-pct-today num-center" oninput="saveToLocal()"></td>
+      <td><input type="text" class="act-wbs-tom" oninput="saveToLocal()"></td>
+      <td><input type="text" class="act-desc-tom" oninput="saveToLocal()"></td>
+      <td><input type="text" class="act-resp-tom" oninput="saveToLocal()"></td>
     `;
     tbody.appendChild(tr);
   }
 
-  function addProgressRow(data = {}) {
-    const tbody = document.getElementById('progressBody');
+  // Filas WBS con Avance Global Ponderado
+  function addWbsRow() {
+    const tbody = document.getElementById('wbsBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" class="prog-wbs" value="${data.wbs || ''}" placeholder="01.01" oninput="saveData()"></td>
-      <td><input type="text" class="prog-desc" value="${data.desc || ''}" placeholder="Descripción de partida..." oninput="saveData()"></td>
-      <td><input type="text" class="prog-unit" value="${data.unit || ''}" placeholder="m³" style="text-align:center;" oninput="saveData()"></td>
-      <td><input type="number" step="any" class="prog-tot" value="${data.tot || ''}" placeholder="0" oninput="recalcProgress(this); saveData()"></td>
-      <td><input type="number" step="any" class="prog-prev" value="${data.prev || ''}" placeholder="0" oninput="recalcProgress(this); saveData()"></td>
-      <td><input type="number" step="any" class="prog-today" value="${data.today || ''}" placeholder="0" oninput="recalcProgress(this); saveData()"></td>
-      <td class="calc-cell prog-curr">0.00</td>
-      <td class="calc-cell prog-pct">0.0%</td>
-      <td class="no-print" style="text-align:center;"><button type="button" class="del-btn" onclick="this.closest('tr').remove(); saveData();">×</button></td>
+      <td><input type="text" class="wbs-code" oninput="saveToLocal()"></td>
+      <td><input type="text" class="wbs-desc" oninput="saveToLocal()"></td>
+      <td><input type="text" class="wbs-unit num-center" oninput="saveToLocal()"></td>
+      <td><input type="number" step="any" class="wbs-tot" oninput="recalcAll()"></td>
+      <td><input type="number" step="any" class="wbs-prev" oninput="recalcAll()"></td>
+      <td><input type="number" step="any" class="wbs-today" oninput="recalcAll()"></td>
+      <td class="calc-cell wbs-curr">0.00</td>
+      <td class="calc-cell wbs-pct">0.0%</td>
+      <td><input type="number" step="any" class="wbs-weight" placeholder="0" oninput="recalcAll()"></td>
+      <td class="calc-cell wbs-weighted">0.00%</td>
     `;
     tbody.appendChild(tr);
-    recalcProgress(tr.querySelector('.prog-tot'));
   }
 
-  function recalcProgress(el) {
-    const tr = el.closest('tr');
-    const tot = parseFloat(tr.querySelector('.prog-tot').value) || 0;
-    const prev = parseFloat(tr.querySelector('.prog-prev').value) || 0;
-    const today = parseFloat(tr.querySelector('.prog-today').value) || 0;
-    const curr = prev + today;
-    const pct = tot > 0 ? (curr / tot) * 100 : 0;
-    tr.querySelector('.prog-curr').textContent = curr.toFixed(2);
-    tr.querySelector('.prog-pct').textContent = pct.toFixed(1) + '%';
-  }
-
-  function addManpowerRow(data) {
+  // Filas Mano de Obra
+  function addManpowerRow(type, role) {
     const tbody = document.getElementById('manpowerBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td style="text-align:center; font-weight:600; font-size:11px;">${data.type}</td>
-      <td><input type="text" class="mp-role" value="${data.role}" oninput="saveData()"></td>
-      <td><input type="number" min="0" class="mp-day" value="${data.day}" oninput="recalcManpower(); saveData()"></td>
-      <td><input type="number" min="0" class="mp-night" value="${data.night}" oninput="recalcManpower(); saveData()"></td>
-      <td class="calc-cell mp-tot-pers">0</td>
-      <td><input type="number" step="0.5" min="0" class="mp-hours" value="${data.hours}" oninput="recalcManpower(); saveData()"></td>
-      <td class="calc-cell mp-today-hh">0</td>
-      <td><input type="number" step="any" min="0" class="mp-prev-hh" value="${data.prevHH}" oninput="recalcManpower(); saveData()"></td>
-      <td class="calc-cell mp-curr-hh">0</td>
+      <td style="font-size:9.5px;">${type}</td>
+      <td style="font-size:9.5px;">${role}</td>
+      <td><input type="number" min="0" class="mp-day" value="0" oninput="recalcAll()"></td>
+      <td><input type="number" min="0" class="mp-night" value="0" oninput="recalcAll()"></td>
+      <td class="calc-cell mp-tot-staff">0</td>
+      <td><input type="number" step="0.5" min="0" class="mp-hrs" value="9" oninput="recalcAll()"></td>
+      <td class="calc-cell mp-hh-today">0</td>
+      <td><input type="number" step="any" min="0" class="mp-hh-prev" value="0" oninput="recalcAll()"></td>
+      <td class="calc-cell mp-hh-curr">0</td>
     `;
     tbody.appendChild(tr);
   }
 
-  function recalcManpower() {
-    let sumDay = 0, sumNight = 0, sumAll = 0, sumTodayHH = 0, sumPrevHH = 0, sumCurrHH = 0;
-    document.querySelectorAll('#manpowerBody tr').forEach(tr => {
-      const day = parseFloat(tr.querySelector('.mp-day').value) || 0;
-      const night = parseFloat(tr.querySelector('.mp-night').value) || 0;
-      const hours = parseFloat(tr.querySelector('.mp-hours').value) || 0;
-      const prevHH = parseFloat(tr.querySelector('.mp-prev-hh').value) || 0;
-
-      const totPers = day + night;
-      const todayHH = totPers * hours;
-      const currHH = prevHH + todayHH;
-
-      tr.querySelector('.mp-tot-pers').textContent = totPers;
-      tr.querySelector('.mp-today-hh').textContent = todayHH.toFixed(1).replace(/\.0$/, '');
-      tr.querySelector('.mp-curr-hh').textContent = currHH.toFixed(1).replace(/\.0$/, '');
-
-      sumDay += day;
-      sumNight += night;
-      sumAll += totPers;
-      sumTodayHH += todayHH;
-      sumPrevHH += prevHH;
-      sumCurrHH += currHH;
-    });
-
-    document.getElementById('totDayStaff').textContent = sumDay;
-    document.getElementById('totNightStaff').textContent = sumNight;
-    document.getElementById('totAllStaff').textContent = sumAll;
-    document.getElementById('totTodayHH').textContent = sumTodayHH.toFixed(1).replace(/\.0$/, '');
-    document.getElementById('totPrevHH').textContent = sumPrevHH.toFixed(1).replace(/\.0$/, '');
-    document.getElementById('totCurrHH').textContent = sumCurrHH.toFixed(1).replace(/\.0$/, '');
-  }
-
-  function addEquipmentRow(data = {}) {
+  // Filas Equipos
+  function addEquipmentRow() {
     const tbody = document.getElementById('equipmentBody');
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" class="eq-desc" value="${data.desc || ''}" placeholder="Ej. Excavadora / Camión Tolva" oninput="saveData()"></td>
-      <td><input type="text" class="eq-code" value="${data.code || ''}" placeholder="Patente / Cód." style="text-align:center;" oninput="saveData()"></td>
-      <td><input type="number" min="0" class="eq-qty" value="${data.qty || ''}" placeholder="0" oninput="saveData()"></td>
-      <td><input type="number" step="0.5" min="0" class="eq-op" value="${data.op || ''}" placeholder="0" oninput="saveData()"></td>
-      <td><input type="number" step="0.5" min="0" class="eq-sb" value="${data.sb || ''}" placeholder="0" oninput="saveData()"></td>
-      <td><input type="number" step="0.5" min="0" class="eq-mt" value="${data.mt || ''}" placeholder="0" oninput="saveData()"></td>
-      <td><input type="text" class="eq-obs" value="${data.obs || ''}" placeholder="Frente / Estado" oninput="saveData()"></td>
-      <td class="no-print" style="text-align:center;"><button type="button" class="del-btn" onclick="this.closest('tr').remove(); saveData();">×</button></td>
+      <td><input type="text" class="eq-desc" oninput="saveToLocal()"></td>
+      <td><input type="text" class="eq-code num-center" oninput="saveToLocal()"></td>
+      <td><input type="number" min="0" class="eq-qty" oninput="saveToLocal()"></td>
+      <td><input type="number" step="0.5" min="0" class="eq-op" oninput="saveToLocal()"></td>
+      <td><input type="number" step="0.5" min="0" class="eq-sb" oninput="saveToLocal()"></td>
+      <td><input type="number" step="0.5" min="0" class="eq-mt" oninput="saveToLocal()"></td>
+      <td><input type="text" class="eq-obs" oninput="saveToLocal()"></td>
     `;
     tbody.appendChild(tr);
   }
 
-  function handleLogoUpload(event) {
-    const file = event.target.files[0];
+  // Cálculos automáticos globales
+  function recalcAll() {
+    // 1. WBS y Avance Global Ponderado
+    let sumWeight = 0;
+    let sumWeightedProgress = 0;
+
+    document.querySelectorAll('#wbsBody tr').forEach(tr => {
+      const tot = parseFloat(tr.querySelector('.wbs-tot').value) || 0;
+      const prev = parseFloat(tr.querySelector('.wbs-prev').value) || 0;
+      const today = parseFloat(tr.querySelector('.wbs-today').value) || 0;
+      const weight = parseFloat(tr.querySelector('.wbs-weight').value) || 0;
+
+      const curr = prev + today;
+      const pct = tot > 0 ? (curr / tot) * 100 : 0;
+      const weighted = (pct * weight) / 100;
+
+      tr.querySelector('.wbs-curr').innerText = curr.toFixed(2);
+      tr.querySelector('.wbs-pct').innerText = pct.toFixed(1) + '%';
+      tr.querySelector('.wbs-weighted').innerText = weighted.toFixed(2) + '%';
+
+      sumWeight += weight;
+      sumWeightedProgress += weighted;
+    });
+
+    document.getElementById('totalWeightCell').innerText = sumWeight.toFixed(2) + '%';
+    document.getElementById('totalGlobalCell').innerText = sumWeightedProgress.toFixed(2) + '%';
+    document.getElementById('headerGlobalProgress').innerText = sumWeightedProgress.toFixed(2) + '%';
+
+    // 2. Mano de Obra y HH
+    let totDay = 0, totNight = 0, totStaff = 0, totHhToday = 0, totHhPrev = 0, totHhCurr = 0;
+
+    document.querySelectorAll('#manpowerBody tr').forEach(tr => {
+      const d = parseFloat(tr.querySelector('.mp-day').value) || 0;
+      const n = parseFloat(tr.querySelector('.mp-night').value) || 0;
+      const hrs = parseFloat(tr.querySelector('.mp-hrs').value) || 0;
+      const prevHh = parseFloat(tr.querySelector('.mp-hh-prev').value) || 0;
+
+      const staff = d + n;
+      const hhToday = staff * hrs;
+      const hhCurr = prevHh + hhToday;
+
+      tr.querySelector('.mp-tot-staff').innerText = staff;
+      tr.querySelector('.mp-hh-today').innerText = hhToday.toFixed(1).replace('.0', '');
+      tr.querySelector('.mp-hh-curr').innerText = hhCurr.toFixed(1).replace('.0', '');
+
+      totDay += d;
+      totNight += n;
+      totStaff += staff;
+      totHhToday += hhToday;
+      totHhPrev += prevHh;
+      totHhCurr += hhCurr;
+    });
+
+    document.getElementById('totDayStaff').innerText = totDay;
+    document.getElementById('totNightStaff').innerText = totNight;
+    document.getElementById('totAllStaff').innerText = totStaff;
+    document.getElementById('totHhToday').innerText = totHhToday.toFixed(1).replace('.0', '');
+    document.getElementById('totHhPrev').innerText = totHhPrev.toFixed(1).replace('.0', '');
+    document.getElementById('totHhCurr').innerText = totHhCurr.toFixed(1).replace('.0', '');
+
+    saveToLocal();
+  }
+
+  // Carga de logo y fotos
+  function handleLogoUpload(e) {
+    const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = document.getElementById('logoPreview');
-      img.src = e.target.result;
+    reader.onload = function(evt) {
+      const img = document.getElementById('companyLogo');
+      img.src = evt.target.result;
       img.style.display = 'block';
-      document.getElementById('logoFallback').style.display = 'none';
-      try { localStorage.setItem('npec_logo', e.target.result); } catch(err) {}
+      document.getElementById('logoPlaceholder').style.display = 'none';
+      try { localStorage.setItem('npec_logo', evt.target.result); } catch(err) {}
     };
     reader.readAsDataURL(file);
   }
 
-  function handlePhotoUpload(event, num) {
-    const file = event.target.files[0];
+  function loadPhoto(e, idx) {
+    const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = document.getElementById('photoImg' + num);
-      img.src = e.target.result;
+    reader.onload = function(evt) {
+      const img = document.getElementById('photoPreview' + idx);
+      img.src = evt.target.result;
       img.style.display = 'block';
-      document.getElementById('photoHint' + num).style.display = 'none';
+      document.getElementById('photoHint' + idx).style.display = 'none';
     };
     reader.readAsDataURL(file);
   }
 
-  function prepareAndPrint() {
-    const rep = document.getElementById('reportNo').value.trim() || 'RDO-001';
-    const dateVal = document.getElementById('reportDate').value || '';
-    const oldTitle = document.title;
-    document.title = `${rep}_NPEC_${dateVal}`;
-    window.print();
-    document.title = oldTitle;
-  }
-
-  function saveData() {
-    const state = {
+  // Autoguardado local
+  function saveToLocal() {
+    const data = {
       reportNo: document.getElementById('reportNo').value,
-      projectName: document.getElementById('projectName').value,
       reportDate: document.getElementById('reportDate').value,
+      projectName: document.getElementById('projectName').value,
       contractCode: document.getElementById('contractCode').value,
       clientName: document.getElementById('clientName').value,
-      revisionNo: document.getElementById('revisionNo').value,
-      workArea: document.getElementById('workArea').value,
-      weatherAM: document.getElementById('weatherAM').value,
-      weatherPM: document.getElementById('weatherPM').value,
-      groundCond: document.getElementById('groundCond').value,
+      weatherAm: document.getElementById('weatherAm').value,
+      weatherPm: document.getElementById('weatherPm').value,
       hseLti: document.getElementById('hseLti').value,
       hseIncidents: document.getElementById('hseIncidents').value,
       hsePtw: document.getElementById('hsePtw').value,
       hseInspections: document.getElementById('hseInspections').value,
-      hseTalkCount: document.getElementById('hseTalkCount').value,
-      hseTalkTopic: document.getElementById('hseTalkTopic').value,
-      restrictionsText: document.getElementById('restrictionsText').value,
-      photoDesc1: document.getElementById('photoDesc1').value,
-      photoDesc2: document.getElementById('photoDesc2').value,
-      photoDesc3: document.getElementById('photoDesc3').value,
-      photoDesc4: document.getElementById('photoDesc4').value,
-      sign1Name: document.getElementById('sign1Name').value,
-      sign2Name: document.getElementById('sign2Name').value,
-      sign3Name: document.getElementById('sign3Name').value,
-      activities: Array.from(document.querySelectorAll('#activitiesBody tr')).map(tr => ({
-        wbs1: tr.querySelector('.act-wbs1').value,
-        desc1: tr.querySelector('.act-desc1').value,
-        pct1: tr.querySelector('.act-pct1').value,
-        wbs2: tr.querySelector('.act-wbs2').value,
-        desc2: tr.querySelector('.act-desc2').value,
-        resp2: tr.querySelector('.act-resp2').value
-      })),
-      progress: Array.from(document.querySelectorAll('#progressBody tr')).map(tr => ({
-        wbs: tr.querySelector('.prog-wbs').value,
-        desc: tr.querySelector('.prog-desc').value,
-        unit: tr.querySelector('.prog-unit').value,
-        tot: tr.querySelector('.prog-tot').value,
-        prev: tr.querySelector('.prog-prev').value,
-        today: tr.querySelector('.prog-today').value
-      })),
-      manpower: Array.from(document.querySelectorAll('#manpowerBody tr')).map(tr => ({
-        role: tr.querySelector('.mp-role').value,
-        day: tr.querySelector('.mp-day').value,
-        night: tr.querySelector('.mp-night').value,
-        hours: tr.querySelector('.mp-hours').value,
-        prevHH: tr.querySelector('.mp-prev-hh').value
-      })),
-      equipment: Array.from(document.querySelectorAll('#equipmentBody tr')).map(tr => ({
-        desc: tr.querySelector('.eq-desc').value,
-        code: tr.querySelector('.eq-code').value,
-        qty: tr.querySelector('.eq-qty').value,
-        op: tr.querySelector('.eq-op').value,
-        sb: tr.querySelector('.eq-sb').value,
-        mt: tr.querySelector('.eq-mt').value,
-        obs: tr.querySelector('.eq-obs').value
-      }))
+      hseAttendees: document.getElementById('hseAttendees').value,
+      hseTopic: document.getElementById('hseTopic').value,
+      remarksText: document.getElementById('remarksText').value,
+      sigPrep: document.getElementById('sigPrep').value,
+      sigRev: document.getElementById('sigRev').value,
+      sigApp: document.getElementById('sigApp').value
     };
-    try { localStorage.setItem('npec_rdo_state', JSON.stringify(state)); } catch(e) {}
+    try { localStorage.setItem('npec_rdo_data', JSON.stringify(data)); } catch(e) {}
   }
 
-  function loadSavedData() {
+  function loadFromLocal() {
+    const savedLogo = localStorage.getItem('npec_logo');
+    if (savedLogo) {
+      const img = document.getElementById('companyLogo');
+      img.src = savedLogo;
+      img.style.display = 'block';
+      document.getElementById('logoPlaceholder').style.display = 'none';
+    }
+    const raw = localStorage.getItem('npec_rdo_data');
+    if (!raw) return;
     try {
-      const savedLogo = localStorage.getItem('npec_logo');
-      if (savedLogo) {
-        const img = document.getElementById('logoPreview');
-        img.src = savedLogo;
-        img.style.display = 'block';
-        document.getElementById('logoFallback').style.display = 'none';
-      }
-
-      const raw = localStorage.getItem('npec_rdo_state');
-      if (!raw) return;
-      const s = JSON.parse(raw);
-
-      ['reportNo','projectName','reportDate','contractCode','clientName','revisionNo',
-       'workArea','weatherAM','weatherPM','groundCond','hseLti','hseIncidents',
-       'hsePtw','hseInspections','hseTalkCount','hseTalkTopic','restrictionsText',
-       'photoDesc1','photoDesc2','photoDesc3','photoDesc4','sign1Name','sign2Name','sign3Name'
-      ].forEach(id => {
-        if (s[id] !== undefined) document.getElementById(id).value = s[id];
+      const d = JSON.parse(raw);
+      Object.keys(d).forEach(k => {
+        if (document.getElementById(k)) document.getElementById(k).value = d[k];
       });
-      updateDayOfWeek();
-
-      if (s.activities && s.activities.length) {
-        document.getElementById('activitiesBody').innerHTML = '';
-        s.activities.forEach(a => addActivityRow(a));
-      }
-      if (s.progress && s.progress.length) {
-        document.getElementById('progressBody').innerHTML = '';
-        s.progress.forEach(p => addProgressRow(p));
-      }
-      if (s.manpower && s.manpower.length) {
-        const rows = document.querySelectorAll('#manpowerBody tr');
-        s.manpower.forEach((m, idx) => {
-          if (rows[idx]) {
-            rows[idx].querySelector('.mp-role').value = m.role;
-            rows[idx].querySelector('.mp-day').value = m.day;
-            rows[idx].querySelector('.mp-night').value = m.night;
-            rows[idx].querySelector('.mp-hours').value = m.hours;
-            rows[idx].querySelector('.mp-prev-hh').value = m.prevHH;
-          }
-        });
-      }
-      if (s.equipment && s.equipment.length) {
-        document.getElementById('equipmentBody').innerHTML = '';
-        s.equipment.forEach(eq => addEquipmentRow(eq));
-      }
+      updateDayName();
     } catch(e) {}
   }
 
   function clearForm() {
-    if (!confirm('¿Estás seguro de que deseas limpiar todos los campos del reporte actual?')) return;
-    localStorage.removeItem('npec_rdo_state');
+    if (!confirm('¿Estás seguro de limpiar todos los datos ingresados?')) return;
+    localStorage.removeItem('npec_rdo_data');
     location.reload();
   }
 
-  function exportCSV() {
-    const rows = [
-      ['REPORTE DIARIO DE OBRA - NEW PRIME EAGLE CONSTRUCTION SpA'],
-      ['N° Reporte', document.getElementById('reportNo').value, 'Fecha', document.getElementById('reportDate').value, 'Día', document.getElementById('dayName').value],
-      ['Proyecto', document.getElementById('projectName').value, 'Contrato', document.getElementById('contractCode').value, 'Cliente', document.getElementById('clientName').value],
-      ['Clima AM', document.getElementById('weatherAM').value, 'Clima PM', document.getElementById('weatherPM').value, 'Terreno', document.getElementById('groundCond').value],
-      [],
-      ['1. SEGURIDAD HSE'],
-      ['Días Sin Accidentes', 'Incidentes', 'Permisos PTW', 'Inspecciones HSE', 'Asistentes Charla', 'Tema Charla'],
-      [document.getElementById('hseLti').value, document.getElementById('hseIncidents').value, document.getElementById('hsePtw').value, document.getElementById('hseInspections').value, document.getElementById('hseTalkCount').value, document.getElementById('hseTalkTopic').value],
-      [],
-      ['2. ACTIVIDADES HOY Y PROGRAMACIÓN MAÑANA'],
-      ['WBS Hoy', 'Actividad Ejecutada Hoy', '% / Estado', 'WBS Mañana', 'Tarea Programada Mañana', 'Responsable']
-    ];
+  // Exportar a CSV compatible con Excel
+  function exportToCSV() {
+    let csv = [];
+    csv.push(['REPORTE DIARIO DE OBRA (RDO) - NEW PRIME EAGLE CONSTRUCTION SpA']);
+    csv.push(['N° Reporte', document.getElementById('reportNo').value, 'Fecha', document.getElementById('reportDate').value, 'Avance Global (%)', document.getElementById('headerGlobalProgress').innerText]);
+    csv.push(['Proyecto', document.getElementById('projectName').value, 'Contrato/WBS', document.getElementById('contractCode').value, 'Cliente', document.getElementById('clientName').value]);
+    csv.push([]);
+    csv.push(['3. CONTROL DE AVANCE FÍSICO POR PARTIDA']);
+    csv.push(['Ítem/WBS', 'Descripción', 'Unidad', 'Cant. Total', 'Acum. Anterior', 'Ejecutado Hoy', 'Acum. Actual', '% Avance Partida', 'Peso/Incid. (%)', '% Avance Ponderado']);
 
-    document.querySelectorAll('#activitiesBody tr').forEach(tr => {
-      rows.push([
-        tr.querySelector('.act-wbs1').value,
-        tr.querySelector('.act-desc1').value,
-        tr.querySelector('.act-pct1').value,
-        tr.querySelector('.act-wbs2').value,
-        tr.querySelector('.act-desc2').value,
-        tr.querySelector('.act-resp2').value
-      ]);
+    document.querySelectorAll('#wbsBody tr').forEach(tr => {
+      const code = tr.querySelector('.wbs-code').value;
+      const desc = tr.querySelector('.wbs-desc').value;
+      if (code || desc) {
+        csv.push([
+          code, desc,
+          tr.querySelector('.wbs-unit').value,
+          tr.querySelector('.wbs-tot').value || 0,
+          tr.querySelector('.wbs-prev').value || 0,
+          tr.querySelector('.wbs-today').value || 0,
+          tr.querySelector('.wbs-curr').innerText,
+          tr.querySelector('.wbs-pct').innerText,
+          (tr.querySelector('.wbs-weight').value || 0) + '%',
+          tr.querySelector('.wbs-weighted').innerText
+        ]);
+      }
     });
+    csv.push(['', '', '', '', '', '', '', 'TOTAL GLOBAL:', document.getElementById('totalWeightCell').innerText, document.getElementById('totalGlobalCell').innerText]);
+    csv.push([]);
+    csv.push(['4. CONTROL DE MANO DE OBRA Y HORAS-HOMBRE']);
+    csv.push(['Tipo', 'Cargo', 'Turno Día', 'Turno Noche', 'Total Personal', 'Horas Jornada', 'HH Hoy', 'HH Acum. Ant.', 'HH Acum. Act.']);
 
-    rows.push([], ['3. AVANCE FÍSICO POR PARTIDA'], ['Ítem/WBS', 'Descripción', 'Unidad', 'Total Contrato', 'Acum. Anterior', 'Ejecutado Hoy', 'Acum. Actual', '% Avance']);
-    document.querySelectorAll('#progressBody tr').forEach(tr => {
-      rows.push([
-        tr.querySelector('.prog-wbs').value,
-        tr.querySelector('.prog-desc').value,
-        tr.querySelector('.prog-unit').value,
-        tr.querySelector('.prog-tot').value,
-        tr.querySelector('.prog-prev').value,
-        tr.querySelector('.prog-today').value,
-        tr.querySelector('.prog-curr').textContent,
-        tr.querySelector('.prog-pct').textContent
-      ]);
-    });
-
-    rows.push([], ['4. MANO DE OBRA Y HORAS-HOMBRE'], ['Tipo', 'Cargo', 'Turno Día', 'Turno Noche', 'Total Pers.', 'Horas', 'HH Hoy', 'HH Acum. Ant.', 'HH Acum. Act.']);
     document.querySelectorAll('#manpowerBody tr').forEach(tr => {
-      rows.push([
-        tr.cells[0].textContent,
-        tr.querySelector('.mp-role').value,
+      const tds = tr.querySelectorAll('td');
+      csv.push([
+        tds[0].innerText, tds[1].innerText,
         tr.querySelector('.mp-day').value,
         tr.querySelector('.mp-night').value,
-        tr.querySelector('.mp-tot-pers').textContent,
-        tr.querySelector('.mp-hours').value,
-        tr.querySelector('.mp-today-hh').textContent,
-        tr.querySelector('.mp-prev-hh').value,
-        tr.querySelector('.mp-curr-hh').textContent
+        tr.querySelector('.mp-tot-staff').innerText,
+        tr.querySelector('.mp-hrs').value,
+        tr.querySelector('.mp-hh-today').innerText,
+        tr.querySelector('.mp-hh-prev').value,
+        tr.querySelector('.mp-hh-curr').innerText
       ]);
     });
 
-    rows.push([], ['5. MAQUINARIA Y EQUIPOS'], ['Equipo', 'Código/Patente', 'Cant.', 'H. Operativas', 'H. Stand-By', 'H. Mantención', 'Observaciones']);
-    document.querySelectorAll('#equipmentBody tr').forEach(tr => {
-      rows.push([
-        tr.querySelector('.eq-desc').value,
-        tr.querySelector('.eq-code').value,
-        tr.querySelector('.eq-qty').value,
-        tr.querySelector('.eq-op').value,
-        tr.querySelector('.eq-sb').value,
-        tr.querySelector('.eq-mt').value,
-        tr.querySelector('.eq-obs').value
-      ]);
-    });
-
-    const csvContent = '\uFEFF' + rows.map(r => r.map(v => `"${String(v || '').replace(/"/g, '""')}"`).join(';')).join('\n');
+    const csvContent = "﻿" + csv.map(e => e.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")).join("
+");
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    const rep = document.getElementById('reportNo').value.trim() || 'RDO-001';
-    const dt = document.getElementById('reportDate').value || 'fecha';
-    link.download = `${rep}_NPEC_${dt}.csv`;
+    link.download = `${document.getElementById('reportNo').value || 'RDO'}_NPEC.csv`;
     link.click();
   }
-
-  window.onload = init;
 </script>
 </body>
 </html>
