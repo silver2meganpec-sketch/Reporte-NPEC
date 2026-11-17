@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reporte Diario de Obra (RDO) - NPEC SpA</title>
-<!-- Librería SheetJS para lectura y escritura de archivos Excel (.xlsx) -->
-<script src="https://sheetjs.com"></script>
+<script>
+  (function() {
+    var s1 = document.createElement('script');
+    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/' + 'xlsx/0.18.5/xlsx.full.min.js';
+    s1.onerror = function() {
+      var s2 = document.createElement('script');
+      s2.src = 'https://unpkg.com/' + 'xlsx@0.18.5/dist/xlsx.full.min.js';
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  })();
+</script>
 <style>
   @page {
     size: A4 portrait;
@@ -25,7 +35,6 @@
     font-size: 11px;
   }
 
-  /* Barra superior de herramientas (solo pantalla) */
   .toolbar {
     background-color: #0d254c;
     color: #ffffff;
@@ -74,7 +83,6 @@
   .btn-purple { background-color: #7c3aed; color: #fff; }
   .btn-red { background-color: #ef4444; color: #fff; }
 
-  /* Contenedor principal simulando hojas A4 */
   .sheet-container {
     max-width: 210mm;
     margin: 15px auto;
@@ -92,7 +100,6 @@
     justify-content: space-between;
   }
 
-  /* Tablas estilo corporativo NPEC */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -171,7 +178,6 @@
     color: #0d254c;
   }
 
-  /* Logo Box */
   .logo-box {
     text-align: center;
     cursor: pointer;
@@ -194,7 +200,6 @@
     line-height: 1.3;
   }
 
-  /* Avance Global Box */
   .global-progress-box {
     background-color: #dcfce7;
     text-align: center;
@@ -216,7 +221,6 @@
     margin-top: 2px;
   }
 
-  /* Botones de fila */
   .btn-add-row {
     background-color: #0d254c;
     color: #ffffff;
@@ -245,7 +249,6 @@
 
   .btn-del-row:hover { background-color: #fecaca; }
 
-  /* Nota explicativa */
   .info-note {
     background-color: #eff6ff;
     border: 1px solid #bfdbfe;
@@ -256,7 +259,6 @@
     margin-bottom: 8px;
   }
 
-  /* Grid 2 columnas para Sección 2 */
   .split-grid {
     display: flex;
     gap: 6px;
@@ -267,7 +269,6 @@
     width: 50%;
   }
 
-  /* Registro Fotográfico */
   .photo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -311,13 +312,11 @@
     padding: 2px 4px;
   }
 
-  /* Firmas */
   .sig-box {
     height: 48px;
     vertical-align: bottom;
   }
 
-  /* Reglas de impresión A4 */
   @media print {
     body {
       background-color: #ffffff;
@@ -360,15 +359,17 @@
     <button type="button" class="btn btn-amber" onclick="document.getElementById('logoInput').click()">📁 Cargar Logo</button>
     <button type="button" class="btn btn-purple" onclick="document.getElementById('excelInput').click()">📥 Importar Excel (Día Ant.)</button>
     <button type="button" class="btn btn-blue" onclick="exportToExcel()">📊 Exportar Excel (.XLSX)</button>
-    <button type="button" class="btn btn-green" onclick="window.print()">🖨️ Guardar PDF / Imprimir</button>
+    <button type="button" class="btn btn-green" onclick="window.print()">🖨️ Guardar PDF / Imprimir (A4 - 2 Hojas)</button>
     <button type="button" class="btn btn-red" onclick="resetForm()">🗑️ Limpiar</button>
   </div>
 </div>
 
 <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
 <input type="file" id="excelInput" accept=".xlsx, .xls" style="display:none" onchange="importFromExcel(event)">
+
 <div class="sheet-container">
 
+  <!-- ==================== HOJA 1 ==================== -->
   <div class="a4-page" id="page1">
     <div>
       <table>
@@ -500,6 +501,7 @@
           <td colspan="4"><input type="text" id="hseTopic" value="Uso correcto de EPP, orden y aseo en frentes de trabajo y prevención de riesgos en maniobras."></td>
         </tr>
       </table>
+
       <div class="split-grid">
         <div class="split-col">
           <table id="tableToday">
@@ -597,7 +599,7 @@
       <button type="button" class="btn-add-row" onclick="addProgressRow()">+ Agregar Partida WBS</button>
 
       <div class="info-note">
-        <strong>Flujo Diario Automático:</strong> Al finalizar el día, presiona <strong>Exportar Excel (.XLSX)</strong>. Al día siguiente, presiona <strong>Importar Excel (Día Ant.)</strong> y selecciona el archivo guardado: el sistema cargará la obra, avanzará el reporte y moverá el <em>Acum. Actual</em> hacia el <em>Acum. Anterior</em> automáticamente.
+        <strong>Flujo Diario Automático:</strong> Al finalizar el día, presiona <strong>Exportar Excel (.XLSX)</strong>. Al día siguiente, presiona <strong>Importar Excel (Día Ant.)</strong> y selecciona el archivo guardado: el sistema cargará los datos del proyecto, avanzará el reporte y moverá el <em>Acum. Actual</em> hacia el <em>Acum. Anterior</em> automáticamente.
       </div>
     </div>
 
@@ -605,6 +607,8 @@
       Página 1 de 2 — New Prime Eagle Construction SpA
     </div>
   </div>
+
+  <!-- ==================== HOJA 2 ==================== -->
   <div class="a4-page" id="page2">
     <div>
       <table>
@@ -794,6 +798,7 @@
   </div>
 
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const dateInput = document.getElementById('reportDate');
@@ -817,15 +822,15 @@
     }
 
     const defaultRoles = [
-      ['Indirecto', 'Jefe de Terreno / Ingenieros / Supervisión'],
-      ['Indirecto', 'Prevención de Riesgos (HSE) / Calidad (QA-QC)'],
-      ['Directo', 'Capataces / Maestros Mayores'],
-      ['Directo', 'Maestros Primera / Segunda (Obras Civiles / Montaje)'],
-      ['Directo', 'Operadores de Maquinaria / Riggers'],
-      ['Directo', 'Jornales / Ayudantes']
+      { tipo: 'Indirecto', cargo: 'Jefe de Terreno / Ingenieros / Supervisión' },
+      { tipo: 'Indirecto', cargo: 'Prevención de Riesgos (HSE) / Calidad (QA-QC)' },
+      { tipo: 'Directo', cargo: 'Capataces / Maestros Mayores' },
+      { tipo: 'Directo', cargo: 'Maestros Primera / Segunda (Obras Civiles / Montaje)' },
+      { tipo: 'Directo', cargo: 'Operadores de Maquinaria / Riggers' },
+      { tipo: 'Directo', cargo: 'Jornales / Ayudantes' }
     ];
     defaultRoles.forEach(function(item) {
-      addManpowerRow(item[0], item[1]);
+      addManpowerRow(item.tipo, item.cargo);
     });
 
     for (let i = 0; i < 4; i++) {
@@ -900,6 +905,7 @@
       '<td class="col-action"><button type="button" class="btn-del-row" onclick="removeRow(this)">X</button></td>';
     tbody.appendChild(tr);
   }
+
   function addProgressRow(item = '', desc = '', unit = '', amt = 0, totQty = 0, prevQty = 0, todayQty = 0) {
     const tbody = document.getElementById('tbodyProgress');
     const tr = document.createElement('tr');
@@ -1067,9 +1073,10 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
+
   function exportToExcel() {
     if (typeof XLSX === 'undefined') {
-      alert('La librería Excel aún se está cargando. Intenta nuevamente en unos segundos.');
+      alert('No se pudo cargar la librería Excel. Verifica tu conexión a internet y recarga la página (F5).');
       return;
     }
 
@@ -1101,8 +1108,7 @@
       ['Revisado_Por_Nombre', document.getElementById('sigRevName').value],
       ['Aprobado_Por_Nombre', document.getElementById('sigAppName').value]
     ];
-    const wsGeneral = XLSX.utils.aoa_to_sheet(generalData);
-    XLSX.utils.book_append_sheet(wb, wsGeneral, 'Resumen_RDO');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(generalData), 'Resumen_RDO');
 
     const progressData = [
       ['Item_WBS', 'Descripcion_Partida', 'Unidad', 'Monto_Total_Partida', 'Cant_Total_Contrato', 'Acum_Anterior', 'Ejecutado_Hoy', 'Acum_Actual', 'Pct_Avance_Partida', 'Peso_Incid_Pct']
@@ -1122,8 +1128,7 @@
         tr.querySelector('.prog-weight-pct').textContent
       ]);
     });
-    const wsProgress = XLSX.utils.aoa_to_sheet(progressData);
-    XLSX.utils.book_append_sheet(wb, wsProgress, 'Avance_Fisico');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(progressData), 'Avance_Fisico');
 
     const manpowerData = [
       ['Tipo', 'Cargo_Especialidad', 'Turno_Dia', 'Turno_Noche', 'Total_Personal', 'Horas_Jornada', 'Total_HH_Hoy', 'HH_Acum_Anterior', 'HH_Acum_Actual']
@@ -1143,8 +1148,7 @@
         parseFloat(tr.querySelector('.mp-curr-hh').textContent) || 0
       ]);
     });
-    const wsManpower = XLSX.utils.aoa_to_sheet(manpowerData);
-    XLSX.utils.book_append_sheet(wb, wsManpower, 'Mano_de_Obra');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(manpowerData), 'Mano_de_Obra');
 
     const equipData = [
       ['Descripcion_Equipo', 'Codigo_Patente', 'Cantidad', 'Hrs_Operativas', 'Hrs_StandBy', 'Hrs_Mantencion', 'Observaciones_Frente']
@@ -1161,8 +1165,7 @@
         inputs[6].value
       ]);
     });
-    const wsEquip = XLSX.utils.aoa_to_sheet(equipData);
-    XLSX.utils.book_append_sheet(wb, wsEquip, 'Maquinaria');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(equipData), 'Maquinaria');
 
     const actData = [
       ['Tipo_Actividad', 'Area_WBS', 'Descripcion', 'Porcentaje_o_Responsable']
@@ -1179,13 +1182,18 @@
         actData.push(['Programado_Manana', inputs[0].value, inputs[1].value, inputs[2].value]);
       }
     });
-    const wsAct = XLSX.utils.aoa_to_sheet(actData);
-    XLSX.utils.book_append_sheet(wb, wsAct, 'Actividades');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(actData), 'Actividades');
 
     const fileName = (document.getElementById('reportNo').value || 'RDO-001') + '_' + (document.getElementById('reportDate').value || 'NPEC') + '.xlsx';
     XLSX.writeFile(wb, fileName);
   }
+
   function importFromExcel(event) {
+    if (typeof XLSX === 'undefined') {
+      alert('No se pudo cargar la librería Excel. Verifica tu conexión a internet y recarga la página (F5).');
+      return;
+    }
+
     const file = event.target.files[0];
     if (!file) return;
 
